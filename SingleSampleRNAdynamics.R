@@ -22,12 +22,19 @@ solve.rates2 <- function(pre.frac,lab.frac,t=1){
     solve.rates(c(pre.frac,lab.frac),t)
 }
 
+solve.rates3 <- function(pre.frac,lab.frac,t=1){
+    sol <- solve.rates(c(pre.frac,lab.frac),t)
+    if (length(sol)==2){
+        return(c(sol,NA_real_,NA_real_))
+    }
+    if (length(sol)==4){
+        return(sol)
+    }
+}
+
 solve.rates <- function(frac,t=1){
     if(is.na(sum(frac))){
-        return(c(NA,NA))
-    }
-    if(frac[2]<1/(2-frac[1])){
-        return(c(NA,NA))
+        return(c(NA_real_,NA_real_))
     }
     pre.frac <- frac[1]
     lab.frac <- frac[2]
@@ -50,7 +57,13 @@ solve.rates <- function(frac,t=1){
         logc <- c.from.k(all,pre.frac,lab.frac,t)
         return(c(logc-all,logc))
     }else{
-        return(c(NA,NA))
+        if(length(all)==2){
+            logc1 <- c.from.k(all[1],pre.frac,lab.frac,t)
+            logc2 <- c.from.k(all[2],pre.frac,lab.frac,t)
+            return(c(logc1-all[1],logc1,logc2-all[2],logc2))
+        }else{
+            return(c(NA,NA))
+        }
     }
 }
 
@@ -100,7 +113,6 @@ t.from.c <- function(logc,log.pre.frac,log.lab.frac,nt=1){## nt is not used, her
     return(nat.t)
 }
 
-
 dt.dc <- function(logc,log.pre.frac,log.lab.frac){
     pf  <- exp(log.pre.frac)
     lf  <- exp(log.lab.frac)
@@ -110,8 +122,6 @@ dt.dc <- function(logc,log.pre.frac,log.lab.frac){
     ret  <-  -(t1/cc+t2)
     return(ret)
 }
-
-
 
 
 
@@ -189,6 +199,20 @@ dr2.dt <- function(c,t){
     den  <- ecm*(et+ec*(c*c*etm-et))
     return(-num/den)
 }
+
+sq.error.line.nat <- function(logc,log.pre.frac,log.lab.frac,t){
+    nat.t  <-  t.from.c(logc,central(log.pre.frac),central(log.lab.frac))
+    if(is.na(nat.t)){
+        nat.t <- t.from.c(logc,central(log.pre.frac),central(log.lab.frac))
+    }
+    cc <- exp(logc)
+    bb <- 1
+    lr1 <- r1(bb,cc,nat.t)
+    lr2 <- r2(bb,cc,nat.t)
+    ret <- (lr1-central(log.pre.frac))^2+(lr2-central(log.lab.frac))^2
+    return (ret)# + sq.error.line(logc-log(nat.t),log.pre.frac,log.lab.frac,t))
+}
+
 
 
 ddc.sq.error.line.nat <- function(logc,log.pre.frac,log.lab.frac,t){
@@ -282,3 +306,27 @@ eval.rates.vec <- function(pre.frac,lab.frac,tp=1,cl=NULL){
     }
     return(ret)
 }     
+
+get.production.rate <- function(lpre.exon,logb,logc,t=1){
+    bb <- exp(logb)
+    cc <- exp(logc)
+    eb <- exp(-bb*t)
+    ec <- exp(-cc*t)
+    dd <- bb-cc
+    si <- ifelse(dd>0,1,-1)## change sign
+    logfac <- log(si*(ec - cc*eb/bb))- log(si*dd)
+    return(lpre.exon -logfac)
+}
+
+get.norm.factor <- function(llab.exon,loga,logb,logc,t=1){
+    aa <- exp(loga)
+    bb <- exp(logb)
+    cc <- exp(logc)
+    eb <- exp(-bb*t)
+    ec <- exp(-cc*t)
+    dd <- bb-cc
+    si <- ifelse(dd>0,1,-1) #change sign 
+    logfac <- log(si*(dd/bb + cc/bb*eb-ec))+loga-log(si*dd)
+    return(llab.exon-logfac)
+}
+
