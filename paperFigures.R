@@ -95,7 +95,7 @@ dev.copy2pdf(file="trajectories.pdf",onefile=T)
 
 ## loading  and preparing data ####
 
-data.WT10 <- fread("transcripts_tpm.csv")
+data.WT10 <- fread("./data/transcripts_tpm.csv")
 
 ## Figure 5. plotting the raw data
 p1 <- ggplot(data.WT10,aes(x=log(P_1_WT_10_8d.intron/P_1_WT_10_8d.exon),y = log(L_1_WT_10_8d.intron/L_1_WT_10_8d.exon)))
@@ -250,7 +250,7 @@ go.fnames <- list()
 go.fnames[["transcription"]] <- "transcription_go.csv"
 go.fnames[["monosaccharide metabolism"]] <- "monosaccharide_met_go.csv"
 
-go.dir <- "../data/valid/go/"
+go.dir <- "./data/"
 evid <- c("EXP","IMP","IDA")
 
 cat.pos <- data.table(cat=go.cat)
@@ -274,8 +274,8 @@ data.WT10[go_func=="pleiotropic",go_func:=NA]
 
 ## plotting Fig. 6
 ax2 <- data.table(from.x=c(0,0),from.y=c(0,0),to.x=c(3,4),to.y=c(3,-4),y.off=c(1,-1),label=c("responsiveness","abundance"))
-p1 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=prod.rate1,y=deg.rate1))+ geom_point(alpha = 0.05,color="lightgray")+ scale_x_continuous(limits = c(-3, 10)) + scale_y_continuous(limits = c(-5.5, 4.5))
-p1 <- p1 + geom_point(data=data.WT10[biotype=="protein_coding"& !is.na(go_func)],aes(color=go_func),pch=19,alpha = 0.5,cex=1)
+p1 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=prod.rate1,y=deg.rate1))+ geom_point(alpha = 0.02,color="black")+ scale_x_continuous(limits = c(-3, 10)) + scale_y_continuous(limits = c(-5.5, 4.5))
+p1 <- p1 + geom_point(data=data.WT10[biotype=="protein_coding"& !is.na(go_func)],aes(color=go_func),pch=19,alpha = 1,cex=1)
 p1 <- p1 + labs(x="synthesis rate [log]", y="degradation rate[log]",color="GO categories")
 p1 <- p1 + theme_classic() +theme(legend.position=c(0.8,1),text = element_text(size=20),legend.text = element_text(size = 12),legend.title = element_text(size = 16))+coord_fixed(ratio = 1)
 p1 <- p1 + geom_segment(aes(x=from.x,y=from.y,xend=to.x,yend=to.y),color="black",data=ax2,arrow = arrow(length = unit(0.2, "cm")),lineend = "round") + geom_text(aes(x=to.x,y=to.y+0.5*sign(to.y),label=label),data=ax2,size=6)
@@ -290,8 +290,8 @@ dev.copy2pdf(file="real_rates.pdf",onefile=T)
 
 ## comparing with Herzog et al.
 
-data.dir <- "../data/valid"
-am.fname <- "rates_ameres.txt"
+data.dir <- "./data/"
+am.fname <- "rates_herzog.txt"
 adata <- fread(paste(data.dir,am.fname,sep="/"),fill=T)
 colnames(adata)[which(colnames(adata)=="Half-life (h)")] <- "Half.life"
 res <- select(org.Mm.eg.db, keys=adata$Name , columns=c("SYMBOL","ENSEMBLTRANS"), keytype="SYMBOL")

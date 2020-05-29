@@ -1,0 +1,85 @@
+GENE PRODUCT DB	GENE PRODUCT ID	SYMBOL	QUALIFIER	GO TERM	GO NAME	ECO ID	GO EVIDENCE CODE	REFERENCE	WITH/FROM	TAXON ID	ASSIGNED BY	ANNOTATION EXTENSION	GO ASPECT
+UniProtKB	G3X9X1	Kbtbd2	acts_upstream_of_or_within_positive_effect	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:27708159	MGI:MGI:5806297	10090	MGI		P
+UniProtKB	O08528	Hk2	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:10428828	MGI:MGI:3624862	10090	MGI		P
+UniProtKB	O08755	Onecut1	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:10825208	MGI:MGI:2179340	10090	MGI		P
+UniProtKB	O09159	Man2b1	acts_upstream_of_or_within	GO:0006013	mannose metabolic process	ECO:0000314	IDA	PMID:9355733		10090	MGI		P
+UniProtKB	O09159	Man2b1	acts_upstream_of_or_within	GO:0006013	mannose metabolic process	ECO:0000314	IDA	PMID:9305783		10090	MGI		P
+UniProtKB	O09159	Man2b1	acts_upstream_of_or_within	GO:0006013	mannose metabolic process	ECO:0000315	IMP	PMID:10400983	MGI:MGI:3584185	10090	MGI		P
+UniProtKB	O54943	Per2	involved_in	GO:0006094	gluconeogenesis	ECO:0000315	IMP	PMID:22504074		10090	UniProt		P
+UniProtKB	P01326	Ins2	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:11854325	MGI:MGI:1857572	10090	MGI		P
+UniProtKB	P06151	Ldha	acts_upstream_of_or_within	GO:0019661	glucose catabolic process to lactate via pyruvate	ECO:0000315	IMP	PMID:8224816	MGI:MGI:2384559	10090	MGI	occurs_in(CL:0000232)	P
+UniProtKB	P06804	Tnf	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000314	IDA	PMID:12068289		10090	MGI		P
+UniProtKB	P13707	Gpd1	acts_upstream_of_or_within	GO:0006094	gluconeogenesis	ECO:0000315	IMP	PMID:12093800		10090	MGI		P
+UniProtKB	P15535	B4galt1	acts_upstream_of_or_within	GO:0006012	galactose metabolic process	ECO:0000314	IDA	PMID:9813328		10090	MGI		P
+UniProtKB	P17751	Tpi1	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000314	IDA	PMID:2693209		10090	MGI		P
+UniProtKB	P31750	Akt1	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:19897600		10090	MGI		P
+UniProtKB	P41160	Lep	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:12540600	MGI:MGI:1856424	10090	MGI		P
+UniProtKB	P42337	Pik3ca	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:16625210	MGI:MGI:3628805	10090	MGI		P
+UniProtKB	P47811	Mapk14	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:12802337		10090	MGI		P
+UniProtKB	P47857	Pfkm	acts_upstream_of_or_within	GO:0061621	canonical glycolysis	ECO:0000315	IMP	PMID:19696889	MGI:MGI:4356541	10090	MGI	occurs_in(EMAPA:32716)	P
+UniProtKB	P52792	Gck	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000314	IDA	PMID:3931624		10090	MGI		P
+UniProtKB	P52792	Gck	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000314	IDA	PMID:141272		10090	MGI		P
+UniProtKB	P52792	Gck	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:9357804	MGI:MGI:1861929	10090	MGI		P
+UniProtKB	P52792	Gck	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:7665557	MGI:MGI:1861929	10090	MGI		P
+UniProtKB	P52792	Gck	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:7556622		10090	MGI		P
+UniProtKB	P52946	Pdx1	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000314	IDA	PMID:12904469		10090	MGI		P
+UniProtKB	P58710	Gulo	involved_in	GO:0019853	L-ascorbic acid biosynthetic process	ECO:0000314	IDA	PMID:14962674		10090	UniProt		P
+UniProtKB	P58710	Gulo	acts_upstream_of_or_within	GO:0019853	L-ascorbic acid biosynthetic process	ECO:0000315	IMP	PMID:10639167	MGI:MGI:2158350	10090	MGI		P
+UniProtKB	P97328	Khk	acts_upstream_of_or_within	GO:0006000	fructose metabolic process	ECO:0000315	IMP	PMID:22371574	MGI:MGI:4398729	10090	MGI		P
+UniProtKB	P97494	Gclc	acts_upstream_of_or_within	GO:0019852	L-ascorbic acid metabolic process	ECO:0000315	IMP	PMID:11118286	MGI:MGI:2429419	10090	MGI	occurs_in(EMAPA:16846)	P
+UniProtKB	P97784	Cry1	involved_in	GO:0006094	gluconeogenesis	ECO:0000315	IMP	PMID:20852621		10090	UniProt		P
+UniProtKB	Q00612	G6pdx	acts_upstream_of_or_within	GO:0019322	pentose biosynthetic process	ECO:0000314	IDA	PMID:9627357		10090	MGI		P
+UniProtKB	Q00612	G6pdx	acts_upstream_of_or_within	GO:0019322	pentose biosynthetic process	ECO:0000314	IDA	PMID:9539108		10090	MGI		P
+UniProtKB	Q00612	G6pdx	acts_upstream_of_or_within	GO:0019322	pentose biosynthetic process	ECO:0000314	IDA	PMID:9330624		10090	MGI		P
+UniProtKB	Q00612	G6pdx	acts_upstream_of_or_within	GO:0019322	pentose biosynthetic process	ECO:0000314	IDA	PMID:8491670		10090	MGI		P
+UniProtKB	Q00612	G6pdx	acts_upstream_of_or_within	GO:0019322	pentose biosynthetic process	ECO:0000314	IDA	PMID:7439685		10090	MGI		P
+UniProtKB	Q00612	G6pdx	acts_upstream_of_or_within	GO:0019322	pentose biosynthetic process	ECO:0000315	IMP	PMID:1953691	MGI:MGI:2182739	10090	MGI		P
+UniProtKB	Q00612	G6pdx	acts_upstream_of_or_within	GO:0019322	pentose biosynthetic process	ECO:0000315	IMP	PMID:15998684	MGI:MGI:2182739	10090	MGI		P
+UniProtKB	Q00612	G6pdx	acts_upstream_of_or_within	GO:0019322	pentose biosynthetic process	ECO:0000315	IMP	PMID:14757696	MGI:MGI:2182739	10090	MGI		P
+UniProtKB	Q00724	Rbp4	involved_in	GO:0006094	gluconeogenesis	ECO:0000315	IMP	PMID:16034410		10090	BHF-UCL		P
+UniProtKB	Q03249	Galt	acts_upstream_of_or_within	GO:0061623	glycolytic process from galactose	ECO:0000315	IMP	PMID:11286504	MGI:MGI:2180188	10090	MGI		P
+UniProtKB	Q03249	Galt	acts_upstream_of_or_within	GO:0006012	galactose metabolic process	ECO:0000315	IMP	PMID:14741191	MGI:MGI:2180188	10090	MGI		P
+UniProtKB	Q04573	Npy1r	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:9861026	MGI:MGI:2158702	10090	MGI		P
+UniProtKB	Q05816	Fabp5	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:12540600	MGI:MGI:2450172	10090	MGI		P
+UniProtKB	Q06507	Atf4	acts_upstream_of_or_within	GO:0006094	gluconeogenesis	ECO:0000314	IDA	PMID:11916968		10090	MGI		P
+UniProtKB	Q3U182	Crtc2	involved_in	GO:0006094	gluconeogenesis	ECO:0000314	IDA	PMID:16148943		10090	UniProt		P
+UniProtKB	Q3UCQ1	Foxk2	acts_upstream_of	GO:0061621	canonical glycolysis	ECO:0000314	IDA	PMID:30700909		10090	UniProt		P
+UniProtKB	Q5EG47	Prkaa1	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:12802337		10090	MGI		P
+UniProtKB	Q60765	Atf3	acts_upstream_of_or_within	GO:0006094	gluconeogenesis	ECO:0000314	IDA	PMID:11916968		10090	MGI		P
+UniProtKB	Q60823	Akt2	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:17202487	MGI:MGI:2158456	10090	MGI		P
+UniProtKB	Q60994	Adipoq	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000314	IDA	PMID:12802337		10090	MGI		P
+UniProtKB	Q60994	Adipoq	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000314	IDA	PMID:12068289		10090	MGI		P
+UniProtKB	Q60994	Adipoq	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000314	IDA	PMID:11479628		10090	MGI		P
+UniProtKB	Q60994	Adipoq	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:12068289	MGI:MGI:2387344	10090	MGI		P
+UniProtKB	Q60994	Adipoq	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:12032136	MGI:MGI:2384094	10090	MGI		P
+UniProtKB	Q61337	Bad	acts_upstream_of_or_within	GO:0006007	glucose catabolic process	ECO:0000315	IMP	PMID:12931191	MGI:MGI:2675966|MGI:MGI:3029528	10090	MGI		P
+UniProtKB	Q64374	Rgn	involved_in	GO:0019853	L-ascorbic acid biosynthetic process	ECO:0000314	IDA	PMID:23349732		10090	UniProt		P
+UniProtKB	Q64435	Ugt1a6	acts_upstream_of_or_within	GO:0019585	glucuronate metabolic process	ECO:0000314	IDA	PMID:8068691		10090	MGI		P
+UniProtKB	Q64521	Gpd2	acts_upstream_of_or_within	GO:0006094	gluconeogenesis	ECO:0000315	IMP	PMID:12093800	MGI:MGI:2387347	10090	MGI		P
+UniProtKB	Q6P549	Inppl1	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:11343120	MGI:MGI:3531322	10090	MGI		P
+UniProtKB	Q75N73	Slc39a14	acts_upstream_of	GO:0006094	gluconeogenesis	ECO:0000315	IMP	PMID:21445361		10090	UniProt		P
+UniProtKB	Q7TSV4	Pgm2	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000314	IDA	PMID:5392465		10090	MGI		P
+UniProtKB	Q7TSV4	Pgm2	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000314	IDA	PMID:4646763		10090	MGI		P
+UniProtKB	Q80ZK9	Wdtc1	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:17767906	MGI:MGI:3774270	10090	MGI		P
+UniProtKB	Q8R059	Gale	acts_upstream_of_or_within	GO:0006012	galactose metabolic process	ECO:0000314	IDA	PMID:14741191		10090	MGI		P
+UniProtKB	Q8R1L8	Angptl8	NOT|involved_in	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:24043787		10090	UniProt		P
+UniProtKB	Q8R2K1	Fuom	involved_in	GO:0006004	fucose metabolic process	ECO:0000314	IDA	PMID:19524593		10090	UniProt		P
+UniProtKB	Q8R2K1	Fuom	involved_in	GO:0006004	fucose metabolic process	ECO:0000314	IDA	PMID:17602138		10090	UniProt		P
+UniProtKB	Q8VDL4	Adpgk	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000314	IDA	PMID:26555263		10090	MGI		P
+UniProtKB	Q91X52	Dcxr	acts_upstream_of_or_within	GO:0005997	xylulose metabolic process	ECO:0000314	IDA	PMID:11882650		10090	MGI		P
+UniProtKB	Q91X52	Dcxr	involved_in	GO:0006006	glucose metabolic process	ECO:0000314	IDA	PMID:11882650		10090	UniProt		P
+UniProtKB	Q924A0	Tcf7l2	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:23260145	MGI:MGI:1926344	10090	MGI		P
+UniProtKB	Q924M7	Mpi	acts_upstream_of_or_within	GO:0061611	mannose to fructose-6-phosphate metabolic process	ECO:0000315	IMP	PMID:16339137	MGI:MGI:3628756	10090	MGI		P
+UniProtKB	Q9D0F9	Pgm1	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000314	IDA	PMID:5392465		10090	MGI		P
+UniProtKB	Q9D0F9	Pgm1	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000314	IDA	PMID:4646763		10090	MGI		P
+UniProtKB	Q9D8H7	Oma1	involved_in	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:22433842		10090	UniProt		P
+UniProtKB	Q9DBB8	Dhdh	acts_upstream_of_or_within	GO:0042843	D-xylose catabolic process	ECO:0000314	IDA	PMID:6753830		10090	MGI		P
+UniProtKB	Q9DCD0	Pgd	acts_upstream_of_or_within	GO:0019322	pentose biosynthetic process	ECO:0000314	IDA	PMID:8491670		10090	MGI		P
+UniProtKB	Q9JII6	Akr1a1	involved_in	GO:0019853	L-ascorbic acid biosynthetic process	ECO:0000315	IMP	PMID:20410296		10090	UniProt		P
+UniProtKB	Q9JII6	Akr1a1	acts_upstream_of_or_within	GO:0042840	D-glucuronate catabolic process	ECO:0000314	IDA	PMID:15769935		10090	MGI		P
+UniProtKB	Q9JII6	Akr1a1	acts_upstream_of_or_within	GO:0019853	L-ascorbic acid biosynthetic process	ECO:0000314	IDA	PMID:15769935		10090	MGI		P
+UniProtKB	Q9R0N0	Galk1	acts_upstream_of_or_within	GO:0006012	galactose metabolic process	ECO:0000314	IDA	PMID:186024		10090	MGI		P
+UniProtKB	Q9R0N0	Galk1	acts_upstream_of_or_within	GO:0061623	glycolytic process from galactose	ECO:0000315	IMP	PMID:10915771	MGI:MGI:2148688	10090	MGI		P
+UniProtKB	Q9R0N0	Galk1	acts_upstream_of_or_within	GO:0006012	galactose metabolic process	ECO:0000315	IMP	PMID:10915771	MGI:MGI:2148688	10090	MGI		P
+UniProtKB	Q9Z1W5	Serp1	acts_upstream_of_or_within	GO:0006006	glucose metabolic process	ECO:0000315	IMP	PMID:16415102	MGI:MGI:3652355	10090	MGI		P
+UniProtKB	Q9Z2V4	Pck1	acts_upstream_of_or_within	GO:0006094	gluconeogenesis	ECO:0000314	IDA	PMID:11916968		10090	MGI		P

@@ -1,0 +1,84 @@
+GENE PRODUCT DB	GENE PRODUCT ID	SYMBOL	QUALIFIER	GO TERM	GO NAME	ECO ID	GO EVIDENCE CODE	REFERENCE	WITH/FROM	TAXON ID	ASSIGNED BY	ANNOTATION EXTENSION	GO ASPECT
+UniProtKB	A2AKX3	Setx	acts_upstream_of_or_within	GO:0006369	termination of RNA polymerase II transcription	ECO:0000315	IMP	PMID:22767893		10090	MGI	has_participant(MGI:MGI:1098283)|has_participant(MGI:MGI:1270859)	P
+UniProtKB	B2RS91	Rrn3	acts_upstream_of_or_within	GO:0006352	DNA-templated transcription, initiation	ECO:0000314	IDA	PMID:8413268		10090	MGI		P
+UniProtKB	B2RS91	Rrn3	acts_upstream_of_or_within	GO:0006361	transcription initiation from RNA polymerase I promoter	ECO:0000315	IMP	PMID:15989966	MGI:MGI:3584037	10090	MGI	occurs_in(CL:0000057)	P
+UniProtKB	B9EJ57	Mterf1b	acts_upstream_of_or_within	GO:0006391	transcription initiation from mitochondrial promoter	ECO:0000314	IDA	PMID:23562081		10090	MGI		P
+UniProtKB	E5FYH1	Topaz1	acts_upstream_of_or_within	GO:0098781	ncRNA transcription	ECO:0000315	IMP	PMID:26358182	MGI:MGI:5700076	10090	MGI	has_output(MGI:MGI:1923054)	P
+UniProtKB	F8VPZ5	Ercc6	acts_upstream_of_or_within	GO:0006362	transcription elongation from RNA polymerase I promoter	ECO:0000315	IMP	PMID:23562818	MGI:MGI:1932102	10090	MGI		P
+UniProtKB	O08784	Tcof1	acts_upstream_of_or_within	GO:0042790	nucleolar large rRNA transcription by RNA polymerase I	ECO:0000315	IMP	PMID:15249688	MGI:MGI:2386185	10090	MGI		P
+UniProtKB	O08811	Ercc2	acts_upstream_of_or_within	GO:0006362	transcription elongation from RNA polymerase I promoter	ECO:0000315	IMP	PMID:23562818	MGI:MGI:2183949	10090	MGI		P
+UniProtKB	O08856	Ell	involved_in	GO:0042795	snRNA transcription by RNA polymerase II	ECO:0000315	IMP	PMID:22195968		10090	UniProt		P
+UniProtKB	O35426-2	Xbp1	involved_in	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:17612490		10090	UniProt		P
+UniProtKB	O35426-2	Xbp1	involved_in	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:20955178		10090	UniProt		P
+UniProtKB	O54724	Cavin1	involved_in	GO:0009303	rRNA transcription	ECO:0000315	IMP	PMID:27528195		10090	UniProt		P
+UniProtKB	O54724	Cavin1	acts_upstream_of_or_within	GO:0006363	termination of RNA polymerase I transcription	ECO:0000314	IDA	PMID:9582279		10090	MGI		P
+UniProtKB	O54724	Cavin1	involved_in	GO:0006363	termination of RNA polymerase I transcription	ECO:0000314	IDA	PMID:9582279		10090	UniProt		P
+UniProtKB	O54724	Cavin1	involved_in	GO:0006361	transcription initiation from RNA polymerase I promoter	ECO:0000314	IDA	PMID:11139612		10090	UniProt		P
+UniProtKB	O88939	Zbtb7a	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000315	IMP	PMID:29813070		10090	UniProt		P
+UniProtKB	O89090	Sp1	acts_upstream_of_or_within	GO:0042789	mRNA transcription by RNA polymerase II	ECO:0000314	IDA	PMID:22331133		10090	MGI		P
+UniProtKB	P02340	Tp53	acts_upstream_of_or_within	GO:0009303	rRNA transcription	ECO:0000316	IGI	PMID:18809582	MGI:MGI:104738	10090	MGI		P
+UniProtKB	P06537	Nr3c1	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000314	IDA	PMID:17081986		10090	CAFA	has_regulation_target(UniProtKB:Q9Z2S7)	P
+UniProtKB	P08122	Col4a2	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000314	IDA	PMID:17525254		10090	UniProt		P
+UniProtKB	P15806	Tcf3	acts_upstream_of_positive_effect	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:16673016		10090	MGI	has_input(MGI:MGI:96677),negatively_regulates(GO:0030218),positively_regulates(GO:0005020)	P
+UniProtKB	P20263	Pou5f1	acts_upstream_of_or_within	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:1967980		10090	MGI		P
+UniProtKB	P22091	Tal1	acts_upstream_of_positive_effect	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:16673016		10090	MGI	has_input(MGI:MGI:96677),negatively_regulates(GO:0030218),positively_regulates(GO:0005020)	P
+UniProtKB	P25976	Ubtf	acts_upstream_of_or_within	GO:0006362	transcription elongation from RNA polymerase I promoter	ECO:0000314	IDA	PMID:23562818		10090	MGI		P
+UniProtKB	P29037	Tbp	acts_upstream_of_or_within	GO:0006383	transcription by RNA polymerase III	ECO:0000315	IMP	PMID:12411709	MGI:MGI:2429772	10090	MGI	occurs_in(EMAPA:16037)	P
+UniProtKB	P29037	Tbp	acts_upstream_of_or_within	GO:0006366	transcription by RNA polymerase II	ECO:0000315	IMP	PMID:12411709	MGI:MGI:2429772	10090	MGI	occurs_in(EMAPA:16037)	P
+UniProtKB	P30561	Ahr	involved_in	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:1314586		10090	UniProt		P
+UniProtKB	P32114-1	Pax2	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000314	IDA	PMID:8413205		10090	UniProt		P
+UniProtKB	P32114-2	Pax2	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000314	IDA	PMID:8413205		10090	UniProt		P
+UniProtKB	P40630	Tfam	involved_in	GO:0006390	mitochondrial transcription	ECO:0000314	IDA	PMID:2628167		10090	MGI		P
+UniProtKB	P42225	Stat1	acts_upstream_of_or_within	GO:0006351	transcription, DNA-templated	ECO:0000315	IMP	PMID:15485925		10090	MGI		P
+UniProtKB	P42227	Stat3	acts_upstream_of_or_within	GO:0042789	mRNA transcription by RNA polymerase II	ECO:0000314	IDA	PMID:26026268		10090	MGI		P
+UniProtKB	P42227	Stat3	acts_upstream_of_or_within	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:11579100		10090	MGI		P
+UniProtKB	P48381	Rfx3	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000315	IMP	PMID:19671664		10090	UniProt		P
+UniProtKB	P49135	Ercc3	acts_upstream_of_or_within	GO:0006362	transcription elongation from RNA polymerase I promoter	ECO:0006054	EXP	PMID:23562818		10090	MGI		P
+UniProtKB	P61969	Lmo4	acts_upstream_of_or_within	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:9860983		10090	MGI		P
+UniProtKB	P63006	Lhx1	involved_in	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:15857913		10090	UniProt		P
+UniProtKB	P70662	Ldb1	involved_in	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:15857913		10090	UniProt		P
+UniProtKB	P70700	Polr1b	acts_upstream_of_or_within	GO:0009303	rRNA transcription	ECO:0000315	IMP	PMID:18023416	MGI:MGI:3774130	10090	MGI	occurs_in(EMAPA:16040)	P
+UniProtKB	Q00288	Pax8	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000314	IDA	PMID:8413205		10090	UniProt		P
+UniProtKB	Q04207	Rela	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000315	IMP	PMID:29813070		10090	UniProt		P
+UniProtKB	Q06219	Nr4a2	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000314	IDA	PMID:19144721		10090	UniProt		P
+UniProtKB	Q06507	Atf4	involved_in	GO:0042789	mRNA transcription by RNA polymerase II	ECO:0000314	IDA	PMID:11106749		10090	UniProt		P
+UniProtKB	Q07243	Mtf1	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000314	IDA	PMID:24529376		10090	UniProt		P
+UniProtKB	Q0VBL6	Hif3a	acts_upstream_of_or_within	GO:0006366	transcription by RNA polymerase II	ECO:0000353	IPI	PMID:9840812	UniProtKB:P35869	10090	MGI		P
+UniProtKB	Q3U285	Lcorl	acts_upstream_of_or_within	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:12560079		10090	MGI		P
+UniProtKB	Q501J6	Ddx17	involved_in	GO:0061614	pri-miRNA transcription by RNA polymerase II	ECO:0000315	IMP	PMID:24910439		10090	UniProt		P
+UniProtKB	Q60668-1	Hnrnpd	involved_in	GO:0042789	mRNA transcription by RNA polymerase II	ECO:0000315	IMP	PMID:22633954		10090	BHF-UCL	has_input(ENSEMBL:ENSMUSG00000021611)	P
+UniProtKB	Q60668-2	Hnrnpd	involved_in	GO:0042789	mRNA transcription by RNA polymerase II	ECO:0000315	IMP	PMID:22633954		10090	BHF-UCL	has_input(ENSEMBL:ENSMUSG00000021611)	P
+UniProtKB	Q60793	Klf4	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000315	IMP	PMID:23372771		10090	CACAO		P
+UniProtKB	Q60829	Ppp1r1b	acts_upstream_of_or_within	GO:0006351	transcription, DNA-templated	ECO:0000315	IMP	PMID:10854268		10090	MGI		P
+UniProtKB	Q61313	Tfap2b	involved_in	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:21829553		10090	UniProt	has_input(UniProtKB:P21275)|has_input(UniProtKB:P21274)	P
+UniProtKB	Q61501	E2f1	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000314	IDA	PMID:11672531		10090	UniProt		P
+UniProtKB	Q61656	Ddx5	involved_in	GO:0061614	pri-miRNA transcription by RNA polymerase II	ECO:0000315	IMP	PMID:24910439		10090	UniProt		P
+UniProtKB	Q62187	Ttf1	acts_upstream_of_or_within	GO:0006363	termination of RNA polymerase I transcription	ECO:0000314	IDA	PMID:7720715		10090	MGI		P
+UniProtKB	Q62187	Ttf1	acts_upstream_of_or_within	GO:0006361	transcription initiation from RNA polymerase I promoter	ECO:0000314	IDA	PMID:7720715		10090	MGI		P
+UniProtKB	Q63844	Mapk3	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000315	IMP	PMID:7889942		10090	UniProt		P
+UniProtKB	Q63871	Polr2k	acts_upstream_of_or_within	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:8329119		10090	MGI		P
+UniProtKB	Q64124	Scx	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000314	IDA	PMID:9328840		10090	UniProt		P
+UniProtKB	Q64364	Cdkn2a	acts_upstream_of_or_within	GO:0009303	rRNA transcription	ECO:0000316	IGI	PMID:18809582	MGI:MGI:98834	10090	MGI		P
+UniProtKB	Q66LM6	Fam170a	involved_in	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:22231842		10090	UniProt		P
+UniProtKB	Q6DFV1	Ncapg2	acts_upstream_of_negative_effect	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:16673016		10090	MGI	has_input(MGI:MGI:96677),negatively_regulates(GO:0030218),positively_regulates(GO:0005020)	P
+UniProtKB	Q6DFV1	Ncapg2	acts_upstream_of_negative_effect	GO:0006366	transcription by RNA polymerase II	ECO:0000315	IMP	PMID:16673016		10090	MGI	has_input(MGI:MGI:96677),negatively_regulates(GO:0030218),positively_regulates(GO:0005020)	P
+UniProtKB	Q6XP49	Glis3	involved_in	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:14500813		10090	UniProt		P
+UniProtKB	Q6ZPI3	Lcor	acts_upstream_of_or_within	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:12560079		10090	MGI		P
+UniProtKB	Q76KJ5	Cd3eap	acts_upstream_of_or_within	GO:0009303	rRNA transcription	ECO:0000314	IDA	PMID:15226435		10090	MGI		P
+UniProtKB	Q80VR2	Ell3	involved_in	GO:0006366	transcription by RNA polymerase II	ECO:0000315	IMP	PMID:23273992		10090	UniProt		P
+UniProtKB	Q8BVN4	Mterf4	acts_upstream_of_or_within	GO:0006390	mitochondrial transcription	ECO:0000315	IMP	PMID:21531335	MGI:MGI:2182095,MGI:MGI:5288505	10090	MGI		P
+UniProtKB	Q8C5D8-1	Pias2	acts_upstream_of_or_within	GO:0006351	transcription, DNA-templated	ECO:0000314	IDA	PMID:9256341		10090	MGI		P
+UniProtKB	Q8CIN6	Celf3	acts_upstream_of_or_within	GO:0098781	ncRNA transcription	ECO:0000315	IMP	PMID:25145264		10090	MGI	has_input(MGI:MGI:2444886)	P
+UniProtKB	Q8K1K9	Hinfp	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000315	IMP	PMID:19590016		10090	UniProt		P
+UniProtKB	Q8K202	Polr1e	acts_upstream_of_or_within	GO:0001188	RNA polymerase I preinitiation complex assembly	ECO:0000314	IDA	PMID:8641287		10090	MGI		P
+UniProtKB	Q8K2X8	Gtf2h5	acts_upstream_of_or_within	GO:0006362	transcription elongation from RNA polymerase I promoter	ECO:0000315	IMP	PMID:23562818	MGI:MGI:5514340	10090	MGI		P
+UniProtKB	Q8VHJ7	Ppargc1b	involved_in	GO:0006390	mitochondrial transcription	ECO:0000315	IMP	PMID:19252502		10090	DFLAT		P
+UniProtKB	Q91W10	Slc39a8	acts_upstream_of	GO:0006351	transcription, DNA-templated	ECO:0000315	IMP	PMID:24529376		10090	UniProt		P
+UniProtKB	Q925J9	Med1	involved_in	GO:0042789	mRNA transcription by RNA polymerase II	ECO:0000315	IMP	PMID:16723356		10090	UniProt	has_input(UniProtKB:P22605)	P
+UniProtKB	Q99K74	Med24	acts_upstream_of_or_within	GO:0006366	transcription by RNA polymerase II	ECO:0000315	IMP	PMID:12093747	MGI:MGI:2446465	10090	MGI		P
+UniProtKB	Q9CPP0	Npm3	acts_upstream_of_or_within	GO:0009303	rRNA transcription	ECO:0000314	IDA	PMID:15596447		10090	MGI		P
+UniProtKB	Q9QWV4	Mlf1	involved_in	GO:0006351	transcription, DNA-templated	ECO:0000314	IDA	PMID:17008314		10090	UniProt		P
+UniProtKB	Q9R1C0	Taf7	acts_upstream_of_or_within	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:10438527		10090	MGI		P
+UniProtKB	Q9WTN3	Srebf1	acts_upstream_of_or_within	GO:0042789	mRNA transcription by RNA polymerase II	ECO:0000314	IDA	PMID:22331133		10090	MGI		P
+UniProtKB	Q9WVH4	Foxo3	involved_in	GO:0006390	mitochondrial transcription	ECO:0000315	IMP	PMID:23283301		10090	UniProt	happens_during(GO:0042149)	P
+UniProtKB	Q9Z1T5	Deaf1	acts_upstream_of_or_within	GO:0006366	transcription by RNA polymerase II	ECO:0000314	IDA	PMID:9860983		10090	MGI		P
