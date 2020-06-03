@@ -3,6 +3,7 @@ library("ggplot2")
 library("data.table")
 library("EnsDb.Mmusculus.v79")
 library("org.Mm.eg.db")
+
 ### genrating simulated data 
 
 nsim <- 50000  # number of data points
@@ -102,7 +103,8 @@ p1 <- ggplot(data.WT10,aes(x=log(P_1_WT_10_8d.intron/P_1_WT_10_8d.exon),y = log(
 #p1 <- p1+ geom_point(alpha=0.01,pch=20)+scale_x_continuous(limits = c(-7, 3)) + scale_y_continuous(limits = c(-7, 3))
 p1 <- p1+ geom_point(aes(alpha=log(1+P_1_WT_10_8d.exon + P_1_WT_10_8d.intron)),pch=20)+scale_x_continuous(limits = c(-7, 3)) + scale_y_continuous(limits = c(-7, 3)) + scale_alpha(range=c(0,0.1),guide=F)
 
-p1 + geom_line(data=data.frame(x=seq(0,1,0.05)),aes(x=log(x),y=log(1/(2-x))),colour="green") + geom_abline(slope=1,colour=rgb(1,0,0,0.5)) + geom_abline(slope=0,colour=rgb(0,0,1,0.5))+ xlab("unlabeled ratio (a) [log]") + ylab("labeled ratio (b) [log]")+theme_classic()+theme(text = element_text(size = 20))
+p1 <- p1 + geom_line(data=data.frame(x=seq(0,1,0.05)),aes(x=log(x),y=log(1/(2-x))),colour="green") + geom_abline(slope=1,colour=rgb(1,0,0,0.5)) + geom_abline(slope=0,colour=rgb(0,0,1,0.5))+theme_classic()+theme(text = element_text(size = 20))+ ylab("labeled ratio (b) [log]")+ xlab("unlabeled ratio (a) [log]") + xlab(bquote("observed unlabeled ratio "*r[u]~ "[log]")) + ylab(bquote("observed labeled ratio "*r[l]~ "[log]"))
+p1
 dev.copy2pdf(file="data_phase.pdf",onefile=T)
 
 
@@ -114,6 +116,14 @@ data.WT10$biotype[idx] <- biot$TXBIOTYPE
 
 rownames(data.WT10) <- data.WT10$rn
 data.WT10[,rn:=NULL]
+
+## getting gene symbols
+
+
+gene.info <- select(edb, keys=rownames(data.WT10), columns=c("TXID", "TXBIOTYPE", "SYMBOL"),keytype="TXID")
+data.WT10$txid = rownames(data.WT10)
+data.WT10[,symbol:=gene.info$SYMBOL[match(txid,gene.info$TXID)]]
+
 
 nrep  <- 3
 
@@ -142,6 +152,9 @@ data.WT10[lab.frac.1>1 | pre.frac.1 >= lab.frac.1,solvable1:="B"]
 data.WT10[lab.frac.2>1 | pre.frac.2 >= lab.frac.2,solvable2:="B"]
 data.WT10[lab.frac.3>1 | pre.frac.3 >= lab.frac.3,solvable3:="B"]
 
+
+pl <- length(setdiff(data.WT10[biotype=="protein_coding" &  P_1_WT_10_8d.exon>1,symbol],data.WT10[biotype=="protein_coding" &  P_1_WT_10_8d.exon>1 & solvable1 %in% c("A","C","L"),symbol]))/length(unique(data.WT10[biotype=="protein_coding" &  P_1_WT_10_8d.exon>1,symbol]))
+print(paste("proportion of genes with bad ratio",pl))
 
 table(data.WT10$solvable1)
 table(data.WT10$solvable2)
@@ -231,10 +244,6 @@ data.WT10[, avg.prod:= apply(cbind(prod.rate1,prod.rate2,prod.rate3),1,mean)]
 
 ### preparing Fig. 6
 
-## getting gene symbols for GO analysis
-gene.info <- select(edb, keys=rownames(data.WT10), columns=c("TXID", "TXBIOTYPE", "SYMBOL"),keytype="TXID")
-data.WT10$txid = rownames(data.WT10)
-data.WT10[,symbol:=gene.info$SYMBOL[match(txid,gene.info$TXID)]]
 
 ## projecting rates on the abundance and reactivity axes for 
 data.WT10[biotype=="protein_coding" &  !is.na(deg.rate1),concentration:= (prod.rate1-deg.rate1)/sqrt(2)]
