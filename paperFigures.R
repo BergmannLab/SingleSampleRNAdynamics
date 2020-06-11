@@ -283,7 +283,9 @@ data.WT10[go_func=="pleiotropic",go_func:=NA]
 
 ## plotting Fig. 6
 ax2 <- data.table(from.x=c(0,0),from.y=c(0,0),to.x=c(3,4),to.y=c(3,-4),y.off=c(1,-1),label=c("responsiveness","abundance"))
-p1 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=prod.rate1,y=deg.rate1))+ geom_point(alpha = 0.02,color="black")+ scale_x_continuous(limits = c(-3, 10)) + scale_y_continuous(limits = c(-5.5, 4.5))
+p1 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=prod.rate1,y=deg.rate1)) + scale_x_continuous(limits = c(-3, 10)) + scale_y_continuous(limits = c(-5.5, 4.5))
+p1 <- p1 + geom_abline(slope=1,intercept=seq(-8,0,2),alpha=0.1,linetype="dashed",color="brown")+geom_abline(slope=-1,intercept=seq(-4,6,2),alpha=0.1,linetype="dashed",color="brown")
+p1 <- p1 + geom_point(alpha = 0.02,color="black")
 p1 <- p1 + geom_point(data=data.WT10[biotype=="protein_coding"& !is.na(go_func)],aes(color=go_func),pch=19,alpha = 1,cex=1)
 p1 <- p1 + labs(x="synthesis rate [log]", y="degradation rate[log]",color="GO categories")
 p1 <- p1 + theme_classic() +theme(legend.position=c(0.8,1),text = element_text(size=20),legend.text = element_text(size = 12),legend.title = element_text(size = 16))+coord_fixed(ratio = 1)
@@ -294,6 +296,17 @@ p1 <- p1 + geom_point(data=med,aes(x=concentration/sqrt(2),y=-concentration/sqrt
 p1 <- p1 + geom_point(data=med,aes(x=reactivity/sqrt(2),y=reactivity/sqrt(2),color=go_func),pch=15,cex=3)
 p1
 dev.copy2pdf(file="real_rates.pdf",onefile=T)
+
+p2 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=concentration,y=reactivity)) + scale_x_continuous(limits = c(-1, 6)) + scale_y_continuous(limits = c(-6, 6))+coord_cartesian(clip = 'off') 
+p2 <- p2 + geom_point(data=data.WT10[biotype=="protein_coding"& !is.na(go_func)],aes(color=go_func),pch=19,alpha = 1,cex=1)
+p2 <- p2 + labs(x="steady-state abundance [log]", y="responsiveness[log]")
+p2 <- p2 + theme_classic() +theme(legend.position = "none",text = element_text(size=20),legend.text = element_text(size = 12),legend.title = element_text(size = 16))+coord_fixed(ratio = 1)
+p2 <- p2 + geom_point(data=med,aes(x=concentration,y=reactivity,color=go_func),pch=15,cex=3)
+##p2 <- p2 + geom_segment(data=med,aes(xend=-1,yend=reactivity,color=go_func))
+p2 <- p2 + geom_hline(aes(yintercept=reactivity,color=go_func),data=med,linetype="dotted")+ geom_vline(aes(xintercept=concentration,color=go_func),data=med,linetype="dotted")
+p2 <- p2 + geom_point(data=med,aes(y=reactivity,x=-1.1,color=go_func),pch=15,cex=3)+geom_point(data=med,aes(y=-6,x=concentration,color=go_func),pch=15,cex=3)
+p2
+
 
 ## p1   + geom_point(data=med,aes(x=prod.rate,y=deg.rate,color=go_func),pch=20,cex=3,alpha=1)
 
