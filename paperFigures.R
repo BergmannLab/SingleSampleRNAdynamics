@@ -112,6 +112,7 @@ dev.copy2pdf(file="data_phase.pdf",onefile=T)
 edb  <- EnsDb.Mmusculus.v79
 biot <- select(edb, keys=data.WT10$rn, columns=c("TXID", "TXBIOTYPE"),keytype="TXID")
 idx <- match(biot$TXID,data.WT10$rn)
+data.WT10$biotype <- NA
 data.WT10$biotype[idx] <- biot$TXBIOTYPE
 
 rownames(data.WT10) <- data.WT10$rn
