@@ -246,8 +246,8 @@ data.WT10[, avg.prod:= apply(cbind(prod.rate1,prod.rate2,prod.rate3),1,mean)]
 
 
 ## projecting rates on the abundance and reactivity axes for 
-data.WT10[biotype=="protein_coding" &  !is.na(deg.rate1),concentration:= (prod.rate1-deg.rate1)/sqrt(2)]
-data.WT10[biotype=="protein_coding" & !is.na(deg.rate1),reactivity:= (prod.rate1+deg.rate1)/sqrt(2)]
+data.WT10[biotype=="protein_coding" &  !is.na(deg.rate1),concentration:= (prod.rate1-deg.rate1)/2]
+data.WT10[biotype=="protein_coding" & !is.na(deg.rate1),reactivity:= (prod.rate1+deg.rate1)/2]
 
 print("correlations:")
 data.WT10[biotype=="protein_coding" & !is.na(deg.rate1),cor(concentration,reactivity)]
@@ -292,12 +292,12 @@ p1 <- p1 + theme_classic() +theme(legend.position=c(0.8,1),text = element_text(s
 p1 <- p1 + geom_segment(aes(x=from.x,y=from.y,xend=to.x,yend=to.y),color="black",data=ax2,arrow = arrow(length = unit(0.2, "cm")),lineend = "round") + geom_text(aes(x=to.x,y=to.y+0.5*sign(to.y),label=label),data=ax2,size=6)
 p1
 med = data.WT10[biotype=="protein_coding",list(concentration=mean(concentration,na.rm=T),reactivity=mean(reactivity,na.rm=T),prod.rate=mean(prod.rate1,na.rm=T),deg.rate=mean(deg.rate1,na.rm=T) ) ,by=go_func]
-p1 <- p1 + geom_point(data=med,aes(x=concentration/sqrt(2),y=-concentration/sqrt(2),color=go_func),pch=15,cex=3)
-p1 <- p1 + geom_point(data=med,aes(x=reactivity/sqrt(2),y=reactivity/sqrt(2),color=go_func),pch=15,cex=3)
+p1 <- p1 + geom_point(data=med,aes(x=concentration,y=-concentration,color=go_func),pch=15,cex=3)
+p1 <- p1 + geom_point(data=med,aes(x=reactivity,y=reactivity,color=go_func),pch=15,cex=3)
 p1
 dev.copy2pdf(file="real_rates.pdf",onefile=T)
 
-p2 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=concentration,y=reactivity)) + scale_x_continuous(limits = c(-0.5, 5.5)) + scale_y_continuous(limits = c(-5.8, 6.5))
+p2 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=concentration,y=reactivity)) + scale_x_continuous(limits = c(-0.5, 4.5)) + scale_y_continuous(limits = c(-5, 5))
 p2 <- p2 + geom_point(data=data.WT10[biotype=="protein_coding"& !is.na(go_func)],aes(color=go_func),pch=19,alpha = 0.5,cex=1)
 p2 <- p2 + labs(x="steady-state abundance [log]", y="responsiveness [log]")
 p2 <- p2 + theme_classic() +theme(legend.position = "none",text = element_text(size=20),legend.text = element_text(size = 12),legend.title = element_text(size = 16))+coord_fixed(ratio = 1,clip="off",expand=F)
@@ -309,13 +309,20 @@ p2
 dev.copy2pdf(file="real_rates_rot.pdf",onefile=T)
 
 
+
 wilcox.test(data.WT10[biotype=="protein_coding" & go_func=="monosaccharide metabolism",reactivity],data.WT10[biotype=="protein_coding" & is.na(go_func),reactivity])
 wilcox.test(data.WT10[biotype=="protein_coding" & go_func=="monosaccharide metabolism",concentration],data.WT10[biotype=="protein_coding" & is.na(go_func),concentration])
 wilcox.test(data.WT10[biotype=="protein_coding" & go_func=="transcription",reactivity],data.WT10[biotype=="protein_coding" & is.na(go_func),reactivity])
 wilcox.test(data.WT10[biotype=="protein_coding" & go_func=="transcription",concentration],data.WT10[biotype=="protein_coding" & is.na(go_func),concentration])
 
+
+
 ## p1   + geom_point(data=med,aes(x=prod.rate,y=deg.rate,color=go_func),pch=20,cex=3,alpha=1)
 
+p1 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=reactivity,y=proc.rate1)) + scale_x_continuous(limits = c(-5, 5)) + scale_y_continuous(limits = c(-4, 2))+theme_classic()+coord_fixed(ratio = 1)+theme(text = element_text(size=20))
+p1 <- p1+ labs(x="responsiveness [log]", y="processing rate [log]")
+p1 + geom_point(pch=20,alpha=0.05)+geom_abline(slope=1,color="red")
+dev.copy2pdf(file="real_proc.pdf",onefile=T)
 ## comparing with Herzog et al.
 
 data.dir <- "./data/"
