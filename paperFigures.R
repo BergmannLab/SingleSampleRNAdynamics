@@ -315,6 +315,13 @@ wilcox.test(data.WT10[biotype=="protein_coding" & go_func=="monosaccharide metab
 wilcox.test(data.WT10[biotype=="protein_coding" & go_func=="transcription",reactivity],data.WT10[biotype=="protein_coding" & is.na(go_func),reactivity])
 wilcox.test(data.WT10[biotype=="protein_coding" & go_func=="transcription",concentration],data.WT10[biotype=="protein_coding" & is.na(go_func),concentration])
 
+p1 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=reactivity,y=proc.rate1))+ scale_x_continuous(limits = c(-5, 7)) + scale_y_continuous(limits = c(-4, 1.5))
+p1 <- p1 +  geom_point(pch=19,alpha = 0.05,cex=1)
+p1 + theme_classic() +theme(text = element_text(size=20))+coord_fixed(ratio = 1)
+p1 <- p1 + labs(x="responsiveness [log]", y="processing rate [log]")
++ scale_x_continuous(limits = c(-3, 10)) + scale_y_continuous(limits = c(-5.5, 4.5))
+
+
 ## p1   + geom_point(data=med,aes(x=prod.rate,y=deg.rate,color=go_func),pch=20,cex=3,alpha=1)
 
 ## comparing with Herzog et al.
