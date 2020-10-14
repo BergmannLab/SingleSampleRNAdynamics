@@ -100,11 +100,15 @@ data.WT10 <- fread("./data/transcripts_tpm.csv")
 
 ## Figure 5. plotting the raw data
 p1 <- ggplot(data.WT10,aes(x=log(P_1_WT_10_8d.intron/P_1_WT_10_8d.exon),y = log(L_1_WT_10_8d.intron/L_1_WT_10_8d.exon)))
-#p1 <- p1+ geom_point(alpha=0.01,pch=20)+scale_x_continuous(limits = c(-7, 3)) + scale_y_continuous(limits = c(-7, 3))
+##p1 <- p1+ geom_point(alpha=0.01,pch=20)+scale_x_continuous(limits = c(-7, 3)) + scale_y_continuous(limits = c(-7, 3))
+p1 <- p1 + geom_rect(xmin=-10,xmax=-7,ymin=0,ymax=10,fill="#CCFFFF",alpha=0.1)
+p1 <- p1 + geom_rect(xmin=-10,xmax=-7,ymin=-10,ymax=0,fill="#FFCCCC",alpha=0.1)
 p1 <- p1+ geom_point(aes(alpha=log(1+P_1_WT_10_8d.exon + P_1_WT_10_8d.intron)),pch=20)+scale_x_continuous(limits = c(-7, 3)) + scale_y_continuous(limits = c(-7, 3)) + scale_alpha(range=c(0,0.1),guide=F)
 
 p1 <- p1 + geom_line(data=data.frame(x=seq(0,1,0.05)),aes(x=log(x),y=log(1/(2-x))),colour="green") + geom_abline(slope=1,colour=rgb(1,0,0,0.5)) + geom_abline(slope=0,colour=rgb(0,0,1,0.5))+theme_classic()+theme(text = element_text(size = 20))+ ylab("labeled ratio (b) [log]")+ xlab("unlabeled ratio (a) [log]") + xlab(bquote("observed unlabeled ratio "*r[u]~ "[log]")) + ylab(bquote("observed labeled ratio "*r[l]~ "[log]"))
-p1
+p2 <- ggplot(data.WT10[biotype=="protein_coding" & is.finite(lab.frac.1)],aes(x=lab.frac.1>1,y=log(P_1_WT_10_8d.exon),fill=lab.frac.1>1))+geom_boxplot(notch=T)+theme_classic()
+p2 <- p2 + xlab("")+ylab("expression [log TPM]")+scale_x_discrete(labels=c(expression(r[l] <= 1),expression(r[l] > 1))) +theme(legend.position = "none",text = element_text(size = 16))+scale_fill_manual(values=c("#FFCCCC", "#CCFFFF"))
+p1+ annotation_custom(ggplotGrob(p2),xmin=-1.5,xmax=3,ymin=-8,ymax=-3)
 dev.copy2pdf(file="data_phase.pdf",onefile=T)
 
 
