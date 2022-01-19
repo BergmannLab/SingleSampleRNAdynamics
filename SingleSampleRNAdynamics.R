@@ -1,8 +1,39 @@
 library(rootSolve)
-library(parallel)
+library(parallel) ## optional, only for parallel processing
 library(data.table)
 
-
+##' Estimates RNA synthesis, processing and degradation rates from 4sU metabolic
+##' labeling experiments with a pre-existing and labeled RNA quantification of
+##' exons and introns. 
+##'
+##' This function implements the method described in Hersch et al,
+##' "Estimating RNA dynamics using one time point for one sample in single-pulse
+##' metabolic labeling experiment", 2022.
+##'
+##' Note that this method can only estimate rates of transripts for which the ratio
+##' of intron to exon expression is below 1 and is higher in the labeled RNA
+##' than in the unlabeled RNA
+##' (see the paper for the details).
+##' 
+##' @title 
+##' @param TPM.data a data frame containing the columns with the following
+##' self-explanatory names:
+##' * unlabeled.intron
+##' * unlabeled.exon
+##' * labeled.intron
+##' * labeled.exon
+##' 
+##' @return A TPM.data converted to a data.table with the following additional columns
+##' * prod.rate the synthesis (or production) rate, in log (base e)
+##' * proc.rate the processing rate, also in log
+##' * deg.rate the degradation rate, also in log
+##' * pre.frac the unlabeled (pre-existing) intro to exon ratio
+##' * lab.frac the labeled (pre-existing) intro to exon ratio
+##' * solvable "C" if the rates were estimated by finding the zero of
+##' the function (eq 13 of paper), "A" if the rates were estimated by minimization,
+##' "B" if the rates cannont be estimated.  
+##' * twosols: a boolean indicating whether two solutions have been found
+##' @author Micha Hersch
 singleSampleRateEstimation  <- function(TPM.data){
 
     ## some specific helper functions
@@ -48,18 +79,21 @@ singleSampleRateEstimation  <- function(TPM.data){
     return(data)
 }
 
-
+## the function for which to find the zeros (eq 13 in the paper)
 func <- function(logk,pre.frac,lab.frac){
     k  <- exp(logk)
     return(k/(k-1)*(log(pre.frac+k-1)-2*log(k)-log(pre.frac))-log(lab.frac-pre.frac)+log(pre.frac)+log(lab.frac*(k+1)-1))
 }
 
-
+## the upper or lower (depending on the arguement)
+## bound of the domain for k (see eq 14 in the paper)
 dom.bound <- function(llab.frac){
     return(log(1-exp(llab.frac))-llab.frac)
 }
 
-
+### in general in the code (and unlike in the paper)
+## c: processing rate
+## b: degradation rate
 c.from.k <- function(logk,pre.frac,lab.frac,tt){
     logc <- log(log(lab.frac-pre.frac)-log(pre.frac)-log(lab.frac*(exp(logk)+1)-1))-log(tt)
     return(logc)
@@ -131,12 +165,6 @@ solve.rates <- function(frac,t=1){
         }
     }
 }
-
-
-
-
-
-
 
 
 
@@ -433,7 +461,6 @@ get.production.rate.ss <- function(pre.exon,pre.intron,lab.exon,lab.intron,logb,
     cc <- exp(logc)
     dd <- cc+bb
     fac  <- -(dd*pre.intron-bb*pre.exon)/(dd*lab.intron-bb*lab.exon)
-##    print(fac)
     loga = logb+log(pre.exon-pre.intron+fac*(lab.exon-lab.intron))
     return(loga)
 }
