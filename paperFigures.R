@@ -6,6 +6,72 @@ library("org.Mm.eg.db")
 library("gridExtra")
 
 
+## The figures of the paper were generated using the following sessionInfo()
+##
+## R version 4.0.5 (2021-03-31)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 20.04.1 LTS
+
+## Matrix products: default
+## BLAS:   /usr/local/lib/R/lib/libRblas.so
+## LAPACK: /usr/local/lib/R/lib/libRlapack.so
+
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=de_CH.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=de_CH.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=de_CH.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=de_CH.UTF-8 LC_IDENTIFICATION=C       
+
+## attached base packages:
+## [1] stats4    parallel  stats     graphics  grDevices utils     datasets 
+## [8] methods   base     
+
+## other attached packages:
+##  [1] gridExtra_2.3              org.Mm.eg.db_3.12.0       
+##  [3] EnsDb.Mmusculus.v79_2.99.0 ensembldb_2.14.0          
+##  [5] AnnotationFilter_1.14.0    GenomicFeatures_1.42.3    
+##  [7] AnnotationDbi_1.52.0       Biobase_2.50.0            
+##  [9] GenomicRanges_1.42.0       GenomeInfoDb_1.26.6       
+## [11] IRanges_2.24.1             S4Vectors_0.28.1          
+## [13] BiocGenerics_0.36.0        data.table_1.14.0         
+## [15] rootSolve_1.8.2.1         
+
+## loaded via a namespace (and not attached):
+##  [1] Rcpp_1.0.6                  lattice_0.20-41            
+##  [3] prettyunits_1.1.1           Rsamtools_2.6.0            
+##  [5] Biostrings_2.58.0           assertthat_0.2.1           
+##  [7] utf8_1.2.1                  BiocFileCache_1.14.0       
+##  [9] R6_2.5.0                    RSQLite_2.2.5              
+## [11] httr_1.4.2                  pillar_1.5.1               
+## [13] zlibbioc_1.36.0             rlang_0.4.10               
+## [15] progress_1.2.2              lazyeval_0.2.2             
+## [17] curl_4.3                    rstudioapi_0.13            
+## [19] blob_1.2.1                  Matrix_1.3-2               
+## [21] BiocParallel_1.24.1         stringr_1.4.0              
+## [23] ProtGenerics_1.22.0         RCurl_1.98-1.3             
+## [25] bit_4.0.4                   biomaRt_2.46.3             
+## [27] DelayedArray_0.16.3         compiler_4.0.5             
+## [29] rtracklayer_1.50.0          pkgconfig_2.0.3            
+## [31] askpass_1.1                 openssl_1.4.3              
+## [33] tidyselect_1.1.0            SummarizedExperiment_1.20.0
+## [35] tibble_3.1.0                GenomeInfoDbData_1.2.4     
+## [37] matrixStats_0.58.0          XML_3.99-0.6               
+## [39] fansi_0.4.2                 crayon_1.4.1               
+## [41] dplyr_1.0.5                 dbplyr_2.1.1               
+## [43] GenomicAlignments_1.26.0    bitops_1.0-6               
+## [45] rappdirs_0.3.3              grid_4.0.5                 
+## [47] gtable_0.3.0                lifecycle_1.0.0            
+## [49] DBI_1.1.1                   magrittr_2.0.1             
+## [51] stringi_1.5.3               cachem_1.0.4               
+## [53] XVector_0.30.0              xml2_1.3.2                 
+## [55] ellipsis_0.3.1              generics_0.1.0             
+## [57] vctrs_0.3.7                 tools_4.0.5                
+## [59] bit64_4.0.5                 glue_1.4.2                 
+## [61] purrr_0.3.4                 hms_1.0.0                  
+## [63] MatrixGenerics_1.2.1        fastmap_1.1.0              
+## [65] memoise_2.0.0              
 
 with.inspect.comp <- TRUE # set to FALSE to avoid the lengthy rate generation from INSPEcT
 
@@ -152,9 +218,6 @@ pn <- ggplot(data=corr.sim[1:5,], aes(x=sd.val)) + geom_line(aes(y=deg.cor,color
 mfrac.sol <- corr.sim$frac.sol[1]
 pn  <- pn + geom_line(aes(y=frac.sol/mfrac.sol,color=" fraction of estimated rates"),size=1,linetype="dashed")
 pn <- pn + scale_color_manual(values = c("black", "red","blue", "green"))
-
-#mcorr.sim <- melt(corr.sim,id="sd.val")
-
 
 
 ## fig.2  - top row 
