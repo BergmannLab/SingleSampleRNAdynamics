@@ -6,14 +6,17 @@ library("org.Mm.eg.db")
 library("gridExtra")
 
 
+
 with.inspect.comp <- TRUE # set to FALSE to avoid the lengthy rate generation from INSPEcT
 
-figdir  <- "mfigs"
+figdir  <- "nfigs"
 figpath <- function(fname){
     return(paste(figdir,fname,sep="/"))
 }
 
-### genrating simulated data 
+######### SIMULATED DATA ###################3
+
+
 
 nsim <- 50000  # number of data points
 
@@ -49,24 +52,10 @@ frac <-cbind(pre.frac[,sc],lab.frac[,sc])
 
 ## estimating rates from observables
 my.ratesn  <-  apply(frac,1,solve.rates,t=t)
-
-#### figure 2 accuracy of solutions  ################
-show.estimates <- function(lrb,lrc,rates){
-  #  par(mfcol=c(1,2))
-    plot(lrb,rates[,1],pch=20,col=rgb(0,0,1,0.05),ylim=c(-6,6),xlim=c(-6,6),xlab="true degradation rate", ylab="estimated degradation rate")
-    abline(a=0,b=1)
-    plot(lrc,rates[,2],pch=20,col=rgb(1,0,0,0.05),ylim=c(-6,6),xlim=c(-6,6),xlab="true processing rate", ylab="estimated processing rate")
-    abline(a=0,b=1)
-}
-
-to.show <- sapply(my.ratesn,function(x)length(x)==2)
 rates <- cbind(sapply(my.ratesn,"[[",1),sapply(my.ratesn,"[[",2))
-par(mfcol=c(2,1))
-show.estimates(log(rb[to.show]),log(rc[to.show]),rates[to.show,])
-dev.copy2pdf(file=figpath("simul_rates.pdf"),onefile=T)
 
-#### figure 3 number of solutions  ######################
-
+## classifying number of solutions
+to.show <- sapply(my.ratesn,function(x)length(x)==2)
 get.table <- function(lrb,lrc,rates,ambig,frac){
     diffb = sqrt((log(rb)-rates[,1])^2)
     diffc = sqrt((log(rc)-rates[,2])^2)
@@ -77,13 +66,15 @@ get.table <- function(lrb,lrc,rates,ambig,frac){
 }
 resn  <- get.table(log(rb),log(rc),rates,to.show,frac)
 
-ggplot(data=resn,aes(x=preex.ratio,y=label.ratio,color=col)) + geom_point(aes(stroke=0))+geom_line(data=data.frame(x=seq(0,1,0.05),col="green"),aes(x=x,y=1/(2-x),colour=as.factor(col)),size=1.5,show.legend=FALSE,guide=FALSE) + theme_classic() + scale_color_manual(name ="rate estimate", labels=c("ambiguous","wrong","correct","b=1/(2-a)"), values=c(rgb(0,0,1,0.2),rgb(1,0,0,0.2),rgb(0.5,0.5,0.5,0.2),"green"))+labs(x="unlabeled ratio (a)",y = "labeled ratio (b)") + scale_x_continuous(limits=c(0,1)) + scale_y_continuous(limits=c(0,1)) + theme(text = element_text(size = 20)) 
+p1 <- ggplot(data=resn,aes(x=preex.ratio,y=label.ratio,color=col))  
+p1 <- p1 +geom_point(aes(stroke=0))
+p1 <- p1 +geom_line(data=data.frame(x=seq(0,1,0.05),col="green"),aes(x=x,y=1/(2-x),colour=as.factor(col)),size=1.5,show.legend=FALSE,guide=FALSE) + theme_classic() + scale_color_manual(name ="rate estimate", labels=c("ambiguous","wrong","correct","b=1/(2-a)"), values=c(rgb(0,0,1,0.5),rgb(1,0,0,0.5),rgb(0.5,0.5,0.5,0.5),"green"))+labs(x="unlabeled ratio (a)",y = "labeled ratio (b)")
+p1 <- p1 + scale_x_continuous(limits=c(0,1)) + scale_y_continuous(limits=c(0,1)) 
+p1  <- p1 + theme(text = element_text(size = 20), legend.position=c(0.7,0.3))
+pp <- p1 + geom_abline(slope=1,color="red")+geom_abline(intercept=1,slope=0,color="blue")
+pp
 
-dev.copy2pdf(file=figpath("simul_phase.pdf"),onefile=T)
-
-
-### figure 4 trajectories
-
+### plotting trajectories Fig 2  bottom center
 trajs <- data.table(lra=log(ra),lrb=log(rb),lrc=log(rc),k=log(rc)-log(rb),preex.ratio=pre.frac,label.ratio=lab.frac)
 p1  <- ggplot(trajs,aes(x=preex.ratio.V2,y=label.ratio.V2,z=k))+theme_classic()
 for (i in seq(-6,6)){
@@ -95,15 +86,94 @@ for (i in seq(-6,6)){
         p1  <- p1+ geom_point(topl,mapping=aes_string(x=cx,y=cy,col="col"),shape=20,size=1)
     }
 }
-p1  <- p1 + scale_color_gradient2(low="blue",high="red",mid="black",midpoint=0,name= "k [log]")
+p1  <- p1 + scale_color_gradient2(low="darkolivegreen1",high="darkorange1",mid="black",midpoint=0,name= "k [log]")
 p1 <- p1 +labs(x="unlabeled ratio (a)",y = "labeled ratio (b)")
-p2  <-  p1 +geom_line(data=data.frame(x=seq(0,1,0.05),col=1.0,k=100),aes(x=x,y=1/(2-x)),color="green",show.legend=FALSE)
-kk  <- seq(-4,4,2)
-p2  <- p2 + annotate("text",x = 1/(1+exp(kk/2)),y =1.05,label=paste("log(k)=",kk/2))
-p2 
-dev.copy2pdf(file=figpath("trajectories.pdf"),onefile=T)
+p1  <-  p1 +geom_line(data=data.frame(x=seq(0,1,0.05),col=1.0,k=100),aes(x=x,y=1/(2-x)),color="green",show.legend=FALSE)
+p1  <- p1 +  geom_abline(slope=1,color="red")+geom_abline(intercept=1,slope=0,color="blue")
+kk  <- seq(-4,4,4)
+pt  <- p1 + annotate("text",x = 1/(1+exp(kk/2)),y =1.05,label=paste("log(k)=",kk/2))
+pt <- pt + theme(text = element_text(size = 20), legend.position=c(0.8,0.3))
+pt  
 
-## loading  and preparing data ####
+
+
+
+#### noise analysis ##################
+
+#all.sdrel  <-c(0,1,5,10,50)
+all.sd  <- c(0,0.01,0.05,0.1,0.5)
+sim.corr1S <- matrix(NA,nrow=length(all.sd),ncol=3)
+init.corr <- sim.corr1S
+nsol <- rep(NA,length(all.sd))
+for (i in rev(seq(length(all.sd)))){
+ersd = log(1+all.sd[i]) ## simulated noise level
+
+### simulated introns and exons
+pre.int = pre.p 
+pre.ex = pre.p + pre.m
+lab.int = lab.p
+lab.ex = lab.p + lab.m
+
+## adding gaussian noise in log space
+npre.int <- exp(log(pre.int)+rnorm(nsim,sd=ersd))
+npre.ex <- exp(log(pre.ex)+rnorm(nsim,sd=ersd))
+nlab.int <- exp(log(lab.int)+rnorm(nsim,sd=ersd))
+nlab.ex <- exp(log(lab.ex)+rnorm(nsim,sd=ersd))
+
+
+
+sc <- 5 # using a single time point to infer rates.
+t <- tp[sc]
+
+
+
+
+## building required dataframe
+sim.data  <-  data.frame(sim.prod=log(ra), sim.deg=log(rb),sim.proc=log(rc),unlabeled.intron=npre.int[,sc], unlabeled.exon=npre.ex[,sc],labeled.intron=nlab.int[,sc],labeled.exon=nlab.ex[,sc])
+
+## estimating rates from observables
+res.data <-singleSampleRateEstimation(sim.data)
+
+## computing correlations
+keep <- which(! res.data$twosols)
+init.corr[i,1] <- cor(c(npre.ex[keep,sc],npre.int[keep,sc],nlab.ex[keep,sc],nlab.int[keep,sc]),c(pre.ex[keep,sc],pre.int[keep,sc],lab.ex[keep,sc],lab.int[keep,sc]))
+
+sim.corr1S[i,1] <- res.data[twosols==FALSE,cor(x=sim.prod,y=prod.rate,use="pairwise.complete")]
+sim.corr1S[i,2] <- res.data[twosols==FALSE,cor(x=sim.deg,y=deg.rate,use="pairwise.complete")]
+sim.corr1S[i,3] <- res.data[twosols==FALSE,cor(x=sim.proc,y=proc.rate,use="pairwise.complete",)]
+
+nsol[i] <- res.data[!is.na(deg.rate),.N]/sum(!is.na(rates[,1]))
+}
+
+corr.sim <- data.frame(sd.val = all.sd,init.cor=init.corr[,1],frac.sol=nsol,prod.cor=sim.corr1S[,1],deg.cor=sim.corr1S[,2],proc.cor=sim.corr1S[,3])
+
+## Fig 2 - bottom right 
+pn <- ggplot(data=corr.sim[1:5,], aes(x=sd.val)) + geom_line(aes(y=deg.cor,color="degradation rate"),size=1) + geom_line(aes(y=proc.cor,color="processing rate"),size=1)+ geom_line(aes(y=prod.cor,color="synthesis rates"),size=1)+labs(x="noise relative standard deviation",y="correlation with true value",color="") +theme_classic()+theme(legend.position=c(0.5,0.8),text=element_text(size=20)) + scale_x_continuous(labels = scales::percent_format()) + scale_y_continuous(labels = scales::percent_format())
+mfrac.sol <- corr.sim$frac.sol[1]
+pn  <- pn + geom_line(aes(y=frac.sol/mfrac.sol,color=" fraction of estimated rates"),size=1,linetype="dashed")
+pn <- pn + scale_color_manual(values = c("black", "red","blue", "green"))
+
+#mcorr.sim <- melt(corr.sim,id="sd.val")
+
+
+
+## fig.2  - top row 
+
+ps <- ggplot(data=res.data[solvable=="C"],aes(x=sim.prod,y=prod.rate-log(t))) + geom_point(alpha=0.1)+theme_classic() +geom_abline(color="red")+ theme(text=element_text(size=20)) + scale_y_continuous(limits=c(-7.5,7.5))+ scale_x_continuous(limits=c(-7.5,7.5)) + labs(x="true value [log]",y = "estimated value [log]", title="synthesis rate")
+
+pd <- ggplot(data=res.data[solvable=="C"],aes(x=sim.deg,y=deg.rate-log(t))) + geom_point(alpha=0.1)+theme_classic()+geom_abline(color="red")+ theme(text=element_text(size=20)) + scale_y_continuous(limits=c(-7.5,7.5))+ scale_x_continuous(limits=c(-7.5,7.5)) + labs(x="true value [log]",y = "estimated value [log]", title="degradation rate")
+
+pb <- ggplot(data=res.data[solvable=="C"],aes(x=sim.proc,y=proc.rate-log(t))) + geom_point(alpha=0.1)+theme_classic()+geom_abline(color="red")+ theme(text=element_text(size=20)) + scale_y_continuous(limits=c(-7.5,7.5))+ scale_x_continuous(limits=c(-7.5,7.5)) +labs(x="true value [log]",y = "estimated value [log]", title="processing rate")
+
+grid.arrange(ps,pd,pb,pp,pt,pn,nrow=2,heights=c(1,2))
+
+dev.copy2pdf(file = figpath("simul_dat.pdf"),onefile=T)
+
+
+
+##### REAL DATA ####################3
+
+##loading  and preparing data ####
 
 data.WT10 <- fread("./data/transcripts_tpm.csv")
 
@@ -135,6 +205,8 @@ p1 <- ggplot(data.WT10,aes(x=log(P_1_WT_10_8d.intron/P_1_WT_10_8d.exon),y = log(
 p1 <- p1 + geom_rect(xmin=-10,xmax=-7,ymin=0,ymax=10,fill="#CCFFFF",alpha=0.1)
 p1 <- p1 + geom_rect(xmin=-10,xmax=-7,ymin=-10,ymax=0,fill="#FFCCCC",alpha=0.1)
 p1 <- p1+ geom_point(aes(alpha=log(1+P_1_WT_10_8d.exon + P_1_WT_10_8d.intron)),pch=20)+scale_x_continuous(limits = c(-7, 3)) + scale_y_continuous(limits = c(-7, 3)) + scale_alpha(range=c(0,0.1),guide=F)
+
+p1 <- p1 + geom_density_2d(color="wheat")
 
 p1 <- p1 + geom_line(data=data.frame(x=seq(0,1,0.05)),aes(x=log(x),y=log(1/(2-x))),colour="green") + geom_abline(slope=1,colour=rgb(1,0,0,0.5)) + geom_abline(slope=0,colour=rgb(0,0,1,0.5))+theme_classic()+theme(text = element_text(size = 20))+ ylab("labeled ratio (b) [log]")+ xlab("unlabeled ratio (a) [log]") + xlab(bquote("observed unlabeled ratio "*r[u]~ "[log]")) + ylab(bquote("observed labeled ratio "*r[l]~ "[log]"))
 
@@ -220,14 +292,14 @@ data.WT10[solvable3=="A" & !twosols.3, c("deg.rate3","proc.rate3"):=refactor2(ev
 
 
 ## computing production rates
-data.WT10[,prod.rate1:= get.production.rate(log(P_1_WT_10_8d.exon),deg.rate1,proc.rate1)]
-data.WT10[,prod.rate2:= get.production.rate(log(P_2_WT_10_8d.exon),deg.rate2,proc.rate2)]
-data.WT10[,prod.rate3:= get.production.rate(log(P_3_WT_10_8d.exon),deg.rate3,proc.rate3)]
+data.WT10[,prod.rate1:= get.production.rate(log(P_1_WT_10_8d.exon-P_1_WT_10_8d.intron),deg.rate1,proc.rate1)]
+data.WT10[,prod.rate2:= get.production.rate(log(P_2_WT_10_8d.exon-P_2_WT_10_8d.intron),deg.rate2,proc.rate2)]
+data.WT10[,prod.rate3:= get.production.rate(log(P_3_WT_10_8d.exon-P_3_WT_10_8d.intron),deg.rate3,proc.rate3)]
 
 ## also for ambiguous cases
-data.WT10[twosols.1==T,prod.rate1b:= get.production.rate(log(P_1_WT_10_8d.exon),deg.rate1b,proc.rate1b)]
-data.WT10[twosols.2==T,prod.rate2b:= get.production.rate(log(P_2_WT_10_8d.exon),deg.rate2b,proc.rate2b)]
-data.WT10[twosols.3==T,prod.rate3b:= get.production.rate(log(P_3_WT_10_8d.exon),deg.rate3b,proc.rate3b)]
+data.WT10[twosols.1==T,prod.rate1b:= get.production.rate(log(P_1_WT_10_8d.exon-P_1_WT_10_8d.intron),deg.rate1b,proc.rate1b)]
+data.WT10[twosols.2==T,prod.rate2b:= get.production.rate(log(P_2_WT_10_8d.exon-P_2_WT_10_8d.intron),deg.rate2b,proc.rate2b)]
+data.WT10[twosols.3==T,prod.rate3b:= get.production.rate(log(P_3_WT_10_8d.exon-P_3_WT_10_8d.intron),deg.rate3b,proc.rate3b)]
 
 ## a simple heuristics to guess which of the two solutions is correct, take the one with the smaller the production rate
 swap.ambiguous <- TRUE
@@ -262,6 +334,23 @@ data.WT10[, avg.deg:= apply(cbind(deg.rate1,deg.rate2,deg.rate3),1,mean)]
 data.WT10[, avg.k:= apply(cbind(proc.rate1-deg.rate1,proc.rate2-deg.rate2,proc.rate3-deg.rate3),1,mean)]
 data.WT10[, avg.proc:= apply(cbind(proc.rate1,proc.rate2,proc.rate3),1,mean)]
 data.WT10[, avg.prod:= apply(cbind(prod.rate1,prod.rate2,prod.rate3),1,mean)]
+
+### Figure 
+
+data.WT10[,prod.rate1b:= get.production.rate.labeled(log(L_1_WT_10_8d.exon-L_1_WT_10_8d.intron),deg.rate1,proc.rate1)]
+
+## data.WT10[,prod.rate1b:= get.norm.factor(log(L_1_WT_10_8d.exon),prod.rate1,deg.rate1,proc.rate1)+prod.rate1]
+
+data.WT10[solvable1=="A",exact1:= abs(func(k.1,pre.frac.1,lab.frac.1)) < 0.0001]
+data.WT10[solvable1=="C",exact1:=TRUE]
+
+rs <- data.WT10[exact1==T & is.finite(prod.rate1)& is.finite(prod.rate1b),cor(prod.rate1,prod.rate1b,use="p")]
+
+p1 <- ggplot(data.WT10[exact1==T],aes(x=prod.rate1,y=prod.rate1b,color=deg.rate1))+geom_point(alpha = 0.08) +scale_x_continuous(limits = c(-6, 7)) + scale_y_continuous(limits = c(-6, 7))+theme_classic() + scale_color_gradient2(low="green",mid="blue",high="red",midpoint=-4,limits=c(-12,NA)) + geom_abline()+theme(text = element_text(size = 20),legend.position=c(0.2,0.8))+ labs(y="synthesis rate estimated from labeled RNA [log]",x="synthesis rate estimated from unlabeled RNA [log]",color = "degradation rate [log]") + annotate("text",x=4,y=-4,label=paste("R =",format(100*rs,digits=0),"%"),size=8)
+
+p1
+
+dev.copy2pdf(file=figpath("synthesis_rates2.pdf"),onefile=T)
 
 ### preparing Fig. 6
 
@@ -309,7 +398,7 @@ p1 <- p1 + geom_abline(slope=1,intercept=seq(-8,0,2),alpha=0.1,linetype="solid",
 p1 <- p1 + geom_point(alpha = 0.02,color="black")
 p1 <- p1 + geom_point(data=data.WT10[biotype=="protein_coding"& !is.na(go_func)],aes(color=go_func),pch=19,alpha = 1,cex=1)
 p1 <- p1 + labs(x="synthesis rate [log]", y="degradation rate[log]",color="GO categories")
-p1 <- p1 + theme_classic() +theme(legend.position=c(0.8,1),text = element_text(size=20),legend.text = element_text(size = 12),legend.title = element_text(size = 16))+coord_fixed(ratio = 1)
+p1 <- p1 + theme_classic() +theme(legend.position=c(0.8,0.2),text = element_text(size=20),legend.text = element_text(size = 12),legend.title = element_text(size = 16))+coord_fixed(ratio = 1)
 p1 <- p1 + geom_segment(aes(x=from.x,y=from.y,xend=to.x,yend=to.y),color="black",data=ax2,arrow = arrow(length = unit(0.2, "cm")),lineend = "round") + geom_text(aes(x=to.x,y=to.y+0.5*sign(to.y),label=label),data=ax2,size=6)
 p1
 med = data.WT10[biotype=="protein_coding",list(concentration=mean(concentration,na.rm=T),reactivity=mean(reactivity,na.rm=T),prod.rate=mean(prod.rate1,na.rm=T),deg.rate=mean(deg.rate1,na.rm=T) ) ,by=go_func]
@@ -327,7 +416,10 @@ p2 <- p2 + geom_point(data=med,aes(x=concentration,y=reactivity,color=go_func),p
 p2 <- p2 + geom_hline(aes(yintercept=reactivity,color=go_func),data=med,linetype="dotted")+ geom_vline(aes(xintercept=concentration,color=go_func),data=med,linetype="dotted")
 p2 <- p2 + geom_point(data=med,aes(y=reactivity,x=-Inf,color=go_func),pch=15,cex=3)+geom_point(data=med,aes(y=-Inf,x=concentration,color=go_func),pch=15,cex=3)
 p2
-dev.copy2pdf(file=figpath("real_rates_rot.pdf"),onefile=T)
+
+grid.arrange(p1,p2,nrow=1,widths=c(2.3,1))
+
+dev.copy2pdf(file=figpath("deg_synt_rates.pdf"),onefile=T)
 
 
 
@@ -341,8 +433,9 @@ p1 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=prod.rate1,y=proc.rate1)
 p1 <- p1 +  geom_point(pch=19,alpha = 0.05,cex=1) +scale_color_gradient2(low="black",mid="blue",high="red",midpoint=5,na.value = "grey")
 p1 <- p1 + theme_classic() +theme(text = element_text(size=20))+coord_fixed(ratio = 1)
 p1 <- p1 + labs(x="synthesis rate [log]", y="processing rate [log]",color="intron size [log]")
+p1 <- p1 + geom_density_2d(color="wheat", bins=8)
 p1
-dev.copy2pdf(file=figpath("real_proc.pdf"),onefile=T)
+dev.copy2pdf(file=figpath("real_proc_cl.pdf"),onefile=T)
 
 ## p1 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=reactivity,y=proc.rate1))+ scale_x_continuous(limits = c(-4, 5)) + scale_y_continuous(limits = c(-4, 1.5))
 ## p1 <- p1 +  geom_point(pch=19,alpha = 0.1,cex=1) 
@@ -352,6 +445,7 @@ dev.copy2pdf(file=figpath("real_proc.pdf"),onefile=T)
 
 ##dev.copy2pdf(file="real_proc.pdf",onefile=T)
 data.WT10[biotype=="protein_coding",cor(prod.rate1,proc.rate1,use="p")]
+data.WT10[biotype=="protein_coding",cor(prod.rate1,deg.rate1,use="p")]
 
 ## comparing with Herzog et al.
 
@@ -383,10 +477,11 @@ data.WT10[,rn := rownames(data.WT10)]
 thresh <- 200
 ss <- summary(lm(fin.deg+log(6) ~ slam.deg,data=aa1[msum>thresh],weights=1-lab.frac))
 
-p1 <- ggplot(aa1[msum>thresh],aes(y=fin.deg+log(6),x=slam.deg))+ geom_point(aes(alpha=1-lab.frac))
-p1 <- p1 + geom_abline(slope=ss$coefficient[2,1],intercept=ss$coefficient[1,1],colour="red")+ theme_classic()+annotate("text",x=-0.75,y=-4,label=paste("R =",format(100*sqrt(ss$r.squared),digits=0),"%"),size=8)+ labs(x="slam-seq estimate", y="single sample estimate ", title="degradation rate [log]")+ guides(alpha=FALSE)+theme(text = element_text(size=20))
-p1
-dev.copy2pdf(file=figpath("valid_t100.pdf"),onefile=T)
+pv <- ggplot(aa1[msum>thresh],aes(y=fin.deg+log(6),x=slam.deg))+ geom_point(aes(alpha=1-lab.frac))
+pv <- pv + geom_abline(slope=ss$coefficient[2,1],intercept=ss$coefficient[1,1],colour="red")+ theme_classic()+annotate("text",x=-0.75,y=-4,label=paste("R =",format(100*sqrt(ss$r.squared),digits=0),"%"),size=8)+ labs(x="slam-seq estimate", y="single sample estimate ", title="degradation rate [log]")+ guides(alpha=FALSE)+theme(text = element_text(size=20))
+pv
+
+#dev.copy2pdf(file=figpath("valid_t100.pdf"),onefile=T)
 
 #### Figure 8 ##########################333
 
@@ -411,11 +506,13 @@ cor.data[,quant1:=df1/df1[1]]
 cor.data[,quant2:=df2/df2[1]]
 cor.data[,quant3:=df3/df3[1]]
 
-p1 <- ggplot(cor.data,aes(x=thresh/2))+geom_line(aes(y=cor1,color="replicate 1"))+geom_line(aes(y=cor2,color="replicate 2"))+geom_line(aes(y=cor3,color="replicate 3"))+scale_y_continuous(lim=c(0,0.7))+theme_classic()+theme(text = element_text(size=20),legend.position=c(0.8,0.5),axis.text=element_text(angle=0,size=12)) +geom_point(data=cor.data[thresh==200,],mapping=aes(y=cor1, color="replicate 1"),size=2)
-p1+ scale_x_continuous(breaks=cor.data[,thresh/2],label=cor.data[,paste0(thresh/2,"\n(",format(100-100*(quant1+quant2+quant3)/3,digits=2),"%)")],name="expression threshold [TPM (and quantiles)]")+ labs(x="expression threshold [TPM (and quantiles)]",y="correlation",color="")
-p1
+pc <- ggplot(cor.data,aes(x=thresh/2))+geom_line(aes(y=cor1,color="replicate 1"))+geom_line(aes(y=cor2,color="replicate 2"))+geom_line(aes(y=cor3,color="replicate 3"))+scale_y_continuous(lim=c(0,0.7))+theme_classic()+theme(text = element_text(size=20),legend.position=c(0.8,0.5),axis.text=element_text(angle=0,size=12)) +geom_point(data=cor.data[thresh==200,],mapping=aes(y=cor1, color="replicate 1"),size=2)
+pc <- pc+ scale_x_continuous(breaks=cor.data[,thresh/2],label=cor.data[,paste0(thresh/2,"\n(",format(100-100*(quant1+quant2+quant3)/3,digits=2),"%)")],name="expression threshold [TPM (and quantiles)]") + labs(x="expression threshold [TPM (and quantiles)]",y="correlation",color="")
+pc
 
-dev.copy2pdf(file=figpath("correlations.pdf"),onefile=T)
+grid.arrange(pv,pc,nrow=1)
+
+dev.copy2pdf(file=figpath("slamseq_comp.pdf"),onefile=T)
 
 
 ### generate inspect rates
@@ -450,10 +547,11 @@ if (with.inspect.comp){
 
 
 #plot(data.WT10[is.finite(log(p.exon.var)+log(P_1_WT_10_8d.exon)),log(P_1_WT_10_8d.exon)],logvar)
- ggplot(data.WT10,aes(x=log(P_1_WT_10_8d.exon),y=log(p.exon.var)))+geom_point(alpha=0.05)+theme_classic() + geom_smooth(span=0.1)
- ggplot(data.WT10,aes(x=log(P_1_WT_10_8d.intron),y=log(p.intron.var)))+geom_point(alpha=0.05)+theme_classic() + geom_smooth(span=0.1)
- ggplot(data.WT10,aes(x=log(L_1_WT_10_8d.exon),y=log(l.exon.var)))+geom_point(alpha=0.05)+theme_classic() + geom_smooth(span=0.1)
- ggplot(data.WT10,aes(x=log(L_1_WT_10_8d.intron),y=log(l.intron.var)))+geom_point(alpha=0.05)+theme_classic() + geom_smooth(span=0.1)
+ggplot(data.WT10,aes(x=log(P_1_WT_10_8d.exon),y=0.5*log(p.exon.var)))+geom_point(alpha=0.05)+theme_classic() + geom_smooth(span=0.1)+ geom_abline(aes(slope=1,intercept=0),color="red")
+    
+ ggplot(data.WT10,aes(x=log(P_1_WT_10_8d.intron),y=0.5*log(p.intron.var)))+geom_point(alpha=0.05)+theme_classic() + geom_smooth(span=0.1) + geom_abline(aes(slope=1,intercept=0),color="red")
+ ggplot(data.WT10,aes(x=log(L_1_WT_10_8d.exon),y=0.5*log(l.exon.var)))+geom_point(alpha=0.05)+theme_classic() + geom_smooth(span=0.1)+ geom_abline(aes(slope=1,intercept=0),color="red")
+ ggplot(data.WT10,aes(x=log(L_1_WT_10_8d.intron),y=log(l.intron.var)))+geom_point(alpha=0.05)+theme_classic() + geom_smooth(span=0.1)+ geom_abline(aes(slope=1,intercept=0),color="red")
 
 
 
@@ -462,7 +560,7 @@ if (with.inspect.comp){
 ## gfit <- gam(log(p.exon.var)~log(P_1_WT_10_8d.exon),data = data.WT10[is.finite(log(p.exon.var)+log(P_1_WT_10_8d.exon))])
 ## sm <- gam(gfit,data=data.WT10)
 
- generate.inspect.rates <- function(fname,idata.WT10){
+ generate.inspect.rates <- function(fname,idata.WT10,sset,benchmark=FALSE){
      insp.rates <- list()
      for (i in seq(1,3)){
          p.ex <- paste("P",i,"WT_10_8d.exon",sep="_")
@@ -492,25 +590,60 @@ if (with.inspect.comp){
          
          matureExp  <- list(exonsExpressions=exonExpMat, intronsExpressions=intronExpMat, exonsVariance=exonVarMat,intronsVariance=intronVarMat)
          nacentExp  <- list(exonsExpressions=exonExpNac, intronsExpressions=intronExpNac, exonsVariance=exonVarNac,intronsVariance=intronVarNac)
-         
+         atoc <- system.time({
          inspObj<-newINSPEcT(tpts=c(10),labeling_time=10,nascentExpressions=nacentExp,matureExpressions=matureExp,degDuringPulse=FALSE, preexisting=TRUE)
          insp.rates[[i]] <- data.frame(rn = ratesFirstGuess(inspObj,'name'))
          insp.rates[[i]][[paste("isynthesis",i,sep=".")]] <- ratesFirstGuess(inspObj,'synthesis')
          insp.rates[[i]][[paste("iprocessing",i,sep=".")]] <- ratesFirstGuess(inspObj,'processing')           
          insp.rates[[i]][[paste("idegradation",i,sep=".")]] <- ratesFirstGuess(inspObj,'degradation')
-         write.csv(insp.rates[[i]],file=paste0(fname,i,".csv"))
+         })
+         if (benchmark){
+           return(c(n.inspect=length(sset),elapsed.inspect=atoc[1]+atoc[2],n.out.inspect=nrow(insp.rates[[i]])))
+        }else{
+           write.csv(insp.rates[[i]],file=paste0(fname,i,".csv"))
+        }
+        
      }
  }
- inspfname <- "inspect_rates" # base filename for inspect rates
-                                        #idata.WT10 <- fread("./data/transcripts_tpm.csv")
- generate.inspect.rates(inspfname,data.WT10)
-##### comparision with inspect ######
+
+    bench.ssre <- function(data.WT10,sset){
+        TPM.data <-data.frame(unlabeled.intron=data.WT10[sset,P_1_WT_10_8d.intron],unlabeled.exon=data.WT10[sset,P_1_WT_10_8d.exon],labeled.intron=data.WT10[sset,L_1_WT_10_8d.intron],labeled.exon=data.WT10[sset,L_1_WT_10_8d.exon])
+        #tic()
+        atoc <- system.time(ssre <- singleSampleRateEstimation(TPM.data))
+        #atoc <- toc()
+        return(c(n.ssre=length(sset),elapsed.ssre=atoc[1]+atoc[2],n.out.ssre=ssre[is.finite(deg.rate),.N]))
+    }
+    
+benchmarking  <- FALSE
+##inspfname <- "inspect_rates" # base filename for inspect rates
+ inspfname <- "insp_rates_loess_p" # base filename for inspect rates
+nbtrans <- nrow(data.WT10)
+
+ if (benchmarking){
+    sample.sizes  <- c(10,100,1000,10000,nbtrans)
+    bench <- c()
+    for (samp.size in sample.sizes[1:4]){
+        sset <- sample(nbtrans,samp.size)
+        b.insp <- generate.inspect.rates(inspfname,data.WT10,sset,benchmark=T)
+        b.insp
+        b.ssre <- bench.ssre(data.WT10,sset)
+        b.ssre
+        bench <- rbind(bench,c(b.insp,b.ssre))
+    }
+    time.ratio <- (bench[,2]*bench[,6])/(bench[,5]*bench[,3])    
+    bench <- cbind(bench,time.ratio)
+    bench
+ }else{
+     sset  <- seq(nbtrans)
+     generate.inspect.rates(inspfname,data.WT10,sset,benchmark=F)
+ }
+
  
  tmp1  <- data.WT10
  for (i in seq(3)){
      insp.rates <- fread(file=paste0(inspfname,i,".csv"))
      names(insp.rates)[1] <- "txid"
-     insp.rates[,2:4]  <-log(insp.rates[,2:4])+log(6)
+     insp.rates[,2:4]  <-log(insp.rates[,2:4])+log(6) ## + log(6) to move from hour^-1 to 10min ^-1 units
      tmp1 <- merge(tmp1,insp.rates,by=c("txid"),all=T)
  }
  comp.insp <- tmp1

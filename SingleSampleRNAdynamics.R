@@ -1,5 +1,52 @@
 library(rootSolve)
 library(parallel)
+library(data.table)
+
+
+singleSampleRateEstimation  <- function(TPM.data){
+
+    ## some specific helper functions
+    refactor <- function(mat){
+        if (! is.null(dim(mat))){
+            return (list(t(mat[1,]),t(mat[2,])))
+        }else{
+            return(list(unlist(lapply(mat,"[[",1)),unlist(lapply(mat,"[[",2))))
+        }
+    }
+
+    refactor2 <- function(mat){return(list(mat[,1],mat[,2]))}
+    refactor4 <- function(mat){return(list(mat[1,],mat[2,],mat[3,],mat[4,]))}
+
+    swap.elmt <- function(a1,a2,idx){
+        tmp <- a1[idx]
+        a1[idx] <- a2[idx]
+        a2[idx] <- tmp
+        return(list(a1,a2))
+    }
+    swap <- function(a1,b1,c1,a2,b2,c2){
+        idx <- which(a1>a2)
+        la <- swap.elmt(a1,a2,idx)
+        lb <- swap.elmt(b1,b2,idx)
+        lc <- swap.elmt(c1,c2,idx)
+        return(list(la[[1]],lb[[1]],lc[[1]],la[[2]],lb[[2]],lc[[2]]))
+    }
+    EPS = exp(-30)
+    data <- data.table(TPM.data)
+    data[,pre.frac:=unlabeled.intron/unlabeled.exon]
+    data[,lab.frac:=labeled.intron/labeled.exon]
+    data[,solvable:=ifelse(lab.frac>1/(2-pre.frac),"C","A")]
+    data[pre.frac < EPS,solvable:="L"]
+    data[lab.frac>1 | pre.frac >= lab.frac,solvable:="B"]
+    data[solvable=="C",c("deg.rate","proc.rate"):=refactor(mapply(solve.rates2,pre.frac,lab.frac))]
+    data[solvable=="A",c("deg.rate","proc.rate","deg.rateb","proc.rateb"):=refactor4(mapply(solve.rates3,pre.frac,lab.frac))]
+    data[,twosols:= !is.na(deg.rateb)]
+    data[solvable=="A" & !twosols, c("deg.rate","proc.rate"):=refactor2(eval.rates.vec(pre.frac,lab.frac,cl=NULL))]
+    data[,prod.rate:= get.production.rate(log(unlabeled.exon-unlabeled.intron),deg.rate,proc.rate)]
+    ## data[,prod.rate:= get.production.rate.ss(unlabeled.exon,unlabeled.intron,labeled.exon, labeled.intron,deg.rate,proc.rate)]
+    data[twosols==T,prod.rateb:= get.production.rate(log(unlabeled.exon),deg.rateb,proc.rateb)]
+    data[twosols==T,c("prod.rate","deg.rate","proc.rate","prod.rateb","deg.rateb","proc.rateb"):=swap(prod.rate,deg.rate, proc.rate,prod.rateb,deg.rateb, proc.rateb)]
+    return(data)
+}
 
 
 func <- function(logk,pre.frac,lab.frac){
@@ -31,7 +78,25 @@ solve.rates3 <- function(pre.frac,lab.frac,t=1){
         return(sol)
     }
 }
-
+##' Extracts processing and degradation rates from unlabled (pre-existing) and labeled intro to exon ratios for a single transcript. 
+##'
+##' See reference paper for the details of the method. Ratios expected to be smaller that one and labeled ratio is expected to be larger than the unlabeled ratio. 
+##' @title 
+##' @param frac a vector of size 2 containing :
+##' 1. the prexisting intron to exon ratio
+##' 2. the labeled intron to exon ratio
+##' @param t the labeling time
+##' @return a vector containing:
+##' 1. the log degradation rate
+##' 2. the log processing rate
+##' the rates in units given by the inverse of the units of t
+##' If their is only one solution the vector is of size 2. If there are two
+##' solutions, the vector is of
+##' size 4 (degr.rate1, proc.rate1, degr.rate2, proc.rate2).
+##' If there are no solution the vector c(NA,NA) is returned. 
+##' 
+##'
+##' @author Micha Hersch
 solve.rates <- function(frac,t=1){
     if(is.na(sum(frac))){
         return(c(NA_real_,NA_real_))
@@ -236,7 +301,17 @@ central <- function(x){
     return (mean(x,na.rm=T))
 }
 
-
+##' Performs function minimization on a bounded domain using a gradient method.
+##'
+##' Looks for two minimas and returns them both.
+##' @title 
+##' @param lpre.frac log unlabeled intron to exon ratio
+##' @param llab.frac log labeled intron to exon ratio
+##' @param init.par initial parameter value for searcu
+##' @param lbm lower bound
+##' @param ubm upper bound
+##' @return Locations of two mimimas
+##' @author Micha Hersch
 moptim <- function(lpre.frac, llab.frac,init.par,lbm,ubm){
     ## try first minimum
     op <- tryCatch(optim(init.par,fn=sq.error.line.nat,gr=ddc.sq.error.line.nat,log.pre.frac=lpre.frac,## use gradient if possible
@@ -272,7 +347,17 @@ moptim <- function(lpre.frac, llab.frac,init.par,lbm,ubm){
     return(opt.par)
 }
 
-## vectorial version of function optimization
+
+##' .. vectorized version of function optimization
+##'
+##' .. content for \details{} ..
+##' @title 
+##' @param pre.frac unlabled intron to exon ratios for multiple transcripts
+##' @param lab.frac labled intron to exon ratios for the same transcripts
+##' @param tp labeling time
+##' @param cl cluster for parallelization (NULL if no parallelization)
+##' @return a matrix where each row corresponds to a transcripts. The first column corresponds to the degradation rate, and the second column corresponds to the processing rate. A third and fourth column containing degradation and processing rates for a second mimima are provided if necessary.  
+##' @author Micha Hersch
 eval.rates.vec <- function(pre.frac,lab.frac,tp=1,cl=NULL){
     keep <-  which(!(pre.frac>1 | lab.frac>1 | is.na(pre.frac) | is.na(lab.frac) | pre.frac>=lab.frac))
     lpre.frac <- log(pre.frac[keep])
@@ -306,8 +391,8 @@ eval.rates.vec <- function(pre.frac,lab.frac,tp=1,cl=NULL){
     }
     return(ret)
 }     
-
-get.production.rate <- function(lpre.exon,logb,logc,t=1){
+## lpre.m = log(pre.exon-pre.intron)
+get.production.rate <- function(lpre.m,logb,logc,t=1){
     bb <- exp(logb)
     cc <- exp(logc)
     eb <- exp(-bb*t)
@@ -315,8 +400,10 @@ get.production.rate <- function(lpre.exon,logb,logc,t=1){
     dd <- bb-cc
     si <- ifelse(dd>0,1,-1)## change sign
     logfac <- log(si*(ec - cc*eb/bb))- log(si*dd)
-    return(lpre.exon -logfac)
+#    logfac <- log(si*(1 - cc/bb *exp(-dd*t))*ec)- log(si*dd)
+    return(lpre.m -logfac)
 }
+
 
 get.norm.factor <- function(llab.exon,loga,logb,logc,t=1){
     aa <- exp(loga)
@@ -330,3 +417,23 @@ get.norm.factor <- function(llab.exon,loga,logb,logc,t=1){
     return(llab.exon-logfac)
 }
 
+get.production.rate.labeled <- function(llab.m, logb,logc,t=1){
+    bb <- exp(logb)
+    cc <- exp(logc)
+    eb <- exp(-bb*t)
+    ec <- exp(-cc*t)
+    dd <- bb-cc
+    si <- ifelse(dd>0,1,-1)## change sign
+    loga <- llab.m + log(si*dd)-log(si*(cc*(eb-1)+bb-ec))
+    return (loga)  
+}
+
+get.production.rate.ss <- function(pre.exon,pre.intron,lab.exon,lab.intron,logb,logc){
+    bb <- exp(logb)
+    cc <- exp(logc)
+    dd <- cc+bb
+    fac  <- -(dd*pre.intron-bb*pre.exon)/(dd*lab.intron-bb*lab.exon)
+##    print(fac)
+    loga = logb+log(pre.exon-pre.intron+fac*(lab.exon-lab.intron))
+    return(loga)
+}
