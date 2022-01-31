@@ -1,6 +1,8 @@
-source("SingleSampleRNAdynamics.R")
-library("ggplot2")
+library("rootSolve")
 library("data.table")
+## use library("SingleSampleRNAdynamics") if the package is installed
+source("SingleSampleRNAdynamics/R/SingleSampleRNAdynamics.R")
+library("ggplot2")
 library("EnsDb.Mmusculus.v79")
 library("org.Mm.eg.db")
 library("gridExtra")

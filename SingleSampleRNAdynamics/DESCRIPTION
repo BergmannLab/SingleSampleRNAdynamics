@@ -1,0 +1,18 @@
+Package: SingleSampleRateEstimation
+Title: Estimation of RNA Synthesis, Processing and Degradation Rates from a Single Sample Metabolic Labeling Experiment
+Version: 0.0.0.9000
+Authors@R: 
+    person("Micha", "Hersch", , "micha.hersch@unil.ch", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: This package estimates RNA 
+License: `use_gpl3_license()` 
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Imports: data.table,
+    rootSolve,
+    parallel
+Suggests: 
+    rmarkdown,
+    knitr
+VignetteBuilder: knitr
