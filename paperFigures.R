@@ -77,7 +77,7 @@ library("gridExtra")
 
 with.inspect.comp <- TRUE # set to FALSE to avoid the lengthy rate generation from INSPEcT
 
-figdir  <- "nfigs"
+figdir  <- "mfigs"
 figpath <- function(fname){
     return(paste(figdir,fname,sep="/"))
 }
@@ -656,7 +656,7 @@ ggplot(data.WT10,aes(x=log(P_1_WT_10_8d.exon),y=0.5*log(p.exon.var)))+geom_point
          matureExp  <- list(exonsExpressions=exonExpMat, intronsExpressions=intronExpMat, exonsVariance=exonVarMat,intronsVariance=intronVarMat)
          nacentExp  <- list(exonsExpressions=exonExpNac, intronsExpressions=intronExpNac, exonsVariance=exonVarNac,intronsVariance=intronVarNac)
          atoc <- system.time({
-         inspObj<-newINSPEcT(tpts=c(10),labeling_time=10,nascentExpressions=nacentExp,matureExpressions=matureExp,degDuringPulse=FALSE, preexisting=TRUE)
+         inspObj<-newINSPEcT(tpts=c(1/6),labeling_time=1/6,nascentExpressions=nacentExp,matureExpressions=matureExp,degDuringPulse=FALSE, preexisting=TRUE)
          insp.rates[[i]] <- data.frame(rn = ratesFirstGuess(inspObj,'name'))
          insp.rates[[i]][[paste("isynthesis",i,sep=".")]] <- ratesFirstGuess(inspObj,'synthesis')
          insp.rates[[i]][[paste("iprocessing",i,sep=".")]] <- ratesFirstGuess(inspObj,'processing')           
@@ -708,7 +708,7 @@ nbtrans <- nrow(data.WT10)
  for (i in seq(3)){
      insp.rates <- fread(file=paste0(inspfname,i,".csv"))
      names(insp.rates)[1] <- "txid"
-     insp.rates[,2:4]  <-log(insp.rates[,2:4])+log(6) ## + log(6) to move from hour^-1 to 10min ^-1 units
+     insp.rates[,2:4]  <-log(insp.rates[,2:4])-log(6) ## - log(6) to move from hour^-1 to 10min ^-1 units
      tmp1 <- merge(tmp1,insp.rates,by=c("txid"),all=T)
  }
  comp.insp <- tmp1
@@ -719,8 +719,8 @@ nbtrans <- nrow(data.WT10)
  irate.name  <- c("isynthesis","iprocessing","idegradation")
  rate.name  <- c("prod.rate","proc.rate","deg.rate")
  irate.label <- c("synthesis","processing", "degradation")
- mlims  <- list(c(-7,8),c(-4,5),c(-6,3))
- imlims  <- list(c(-1,7),c(-1,5),c(-2,1))
+ mlims  <- list(c(-7,8),c(-4,3),c(-6,3))
+ imlims  <- list(c(0,8),c(-1,5),c(-2,2))
  replid <- c(2,3,1)
  cpi <- list()
  cp <- list()
@@ -772,14 +772,14 @@ nbtrans <- nrow(data.WT10)
  ilabx <- paste("INSPEcT",irate.label[1],"rate [log]")
  ilaby <- paste("INSPEcT",irate.label[2],"rate [log]")
  rr  <- cor(comp.insp[cond,get(icol1)],comp.insp[cond,get(icol2)], method="spearman", use= "pairwise.complete.obs")
- spi[[1]] <- ggplot(comp.insp[cond],aes(x=!!icolx,y=!!icoly))+geom_point(alpha=al.val)+theme_classic()+scale_x_continuous(limits=mlims[[1]])+scale_y_continuous(limits=imlims[[2]])+annotate("text",x=Inf,y= -Inf,vjust=0,hjust=1,label=paste("R =",format(100*rr,digits=0),"%"),size=8)+xlab(ilabx)+ylab(ilaby)+theme(axis.title.x = element_text(size = 16),axis.title.y = element_text(size = 16))
+ spi[[1]] <- ggplot(comp.insp[cond],aes(x=!!icolx,y=!!icoly))+geom_point(alpha=al.val)+theme_classic()+scale_x_continuous(limits=imlims[[1]])+scale_y_continuous(limits=imlims[[2]])+annotate("text",x=Inf,y= -Inf,vjust=0,hjust=1,label=paste("R =",format(100*rr,digits=0),"%"),size=8)+xlab(ilabx)+ylab(ilaby)+theme(axis.title.x = element_text(size = 16),axis.title.y = element_text(size = 16))
  
  icol2 <- paste(irate.name[3],replid[3],sep=".")
  icoly <- sym(icol2)
  ilabx <- paste("repl.",replid[3], "INSPEcT",irate.label[1],"rate [log]")
  ilaby <- paste("repl.",replid[3], "INSPEcT",irate.label[3],"rate [log]")
  rr  <- cor(comp.insp[cond,get(icol1)],comp.insp[cond,get(icol2)], method="spearman", use= "pairwise.complete.obs")
- spi[[2]] <- ggplot(comp.insp[cond],aes(x=!!icolx,y=!!icoly))+geom_point(alpha=al.val)+theme_classic()+scale_x_continuous(limits=mlims[[1]])+scale_y_continuous(limits=imlims[[3]])+annotate("text",x=Inf,y=-Inf,vjust=0,hjust=1,label=paste("R =",format(100*rr,digits=0),"%"),size=8)+xlab(ilabx)+ylab(ilaby)+theme(axis.title.x = element_text(size = 16),axis.title.y = element_text(size = 16))
+ spi[[2]] <- ggplot(comp.insp[cond],aes(x=!!icolx,y=!!icoly))+geom_point(alpha=al.val)+theme_classic()+scale_x_continuous(limits=imlims[[1]])+scale_y_continuous(limits=imlims[[3]])+annotate("text",x=Inf,y=-Inf,vjust=0,hjust=1,label=paste("R =",format(100*rr,digits=0),"%"),size=8)+xlab(ilabx)+ylab(ilaby)+theme(axis.title.x = element_text(size = 16),axis.title.y = element_text(size = 16))
  
 
 ## compare rates with herzog et al
