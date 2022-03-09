@@ -82,7 +82,7 @@ figpath <- function(fname){
     return(paste(figdir,fname,sep="/"))
 }
 
-######### SIMULATED DATA ###################3
+######### SIMULATED DATA (Fig.2 ) ###################3
 
 
 
@@ -264,7 +264,9 @@ data.WT10[,symbol:=gene.info$SYMBOL[match(txid,gene.info$TXID)]]
 
 
 
-## Figure 3. plotting the raw data
+###### Figure 3  ##############
+
+## Fig 3 left - plotting the raw data
 p1 <- ggplot(data.WT10,aes(x=log(P_1_WT_10_8d.intron/P_1_WT_10_8d.exon),y = log(L_1_WT_10_8d.intron/L_1_WT_10_8d.exon)))
 ##p1 <- p1+ geom_point(alpha=0.01,pch=20)+scale_x_continuous(limits = c(-7, 3)) + scale_y_continuous(limits = c(-7, 3))
 p1 <- p1 + geom_rect(xmin=-10,xmax=-7,ymin=0,ymax=10,fill="#CCFFFF",alpha=0.1)
@@ -284,11 +286,12 @@ lab.frac  <- data.WT10[,seq(3*nrep+1,4*nrep),with=F]/data.WT10[,seq(2*nrep+1,3*n
 data.WT10[,paste("pre.frac",seq(nrep),sep=".") := pre.frac]
 data.WT10[,paste("lab.frac",seq(nrep),sep=".") := lab.frac]
 
-
+### Fig 3 left - inset
 p2 <- ggplot(data.WT10[biotype=="protein_coding" & is.finite(lab.frac.1)],aes(x=lab.frac.1>1,y=log(P_1_WT_10_8d.exon),fill=lab.frac.1>1))+geom_boxplot(notch=T)+theme_classic()
 p2 <- p2 + xlab("")+ylab("expression [log TPM]")+scale_x_discrete(labels=c(expression(r[l] <= 1),expression(r[l] > 1))) +theme(legend.position = "none",text = element_text(size = 16))+scale_fill_manual(values=c("#FFCCCC", "#CCFFFF"))
-p1+ annotation_custom(ggplotGrob(p2),xmin=-1.5,xmax=3,ymin=-8,ymax=-3)
-dev.copy2pdf(file=figpath("data_phase.pdf"),onefile=T)
+p3  <- p1+ annotation_custom(ggplotGrob(p2),xmin=-1.5,xmax=3,ymin=-8,ymax=-3)
+p3
+#dev.copy2pdf(file=figpath("data_phase.pdf"),onefile=T)
 
 
 ## classifying transcripts:
@@ -400,7 +403,20 @@ data.WT10[, avg.k:= apply(cbind(proc.rate1-deg.rate1,proc.rate2-deg.rate2,proc.r
 data.WT10[, avg.proc:= apply(cbind(proc.rate1,proc.rate2,proc.rate3),1,mean)]
 data.WT10[, avg.prod:= apply(cbind(prod.rate1,prod.rate2,prod.rate3),1,mean)]
 
-### Figure 
+## Fig 3, right
+p1 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=prod.rate1,y=proc.rate1))+ scale_x_continuous(limits = c(-2, 8)) + scale_y_continuous(limits = c(-5, 5))
+p1 <- p1 +  geom_point(pch=19,alpha = 0.05,cex=1) +scale_color_gradient2(low="black",mid="blue",high="red",midpoint=5,na.value = "grey")
+p1 <- p1 + theme_classic() +theme(text = element_text(size=20))+coord_fixed(ratio = 1)
+p1 <- p1 + labs(x="synthesis rate [log]", y="processing rate [log]",color="intron size [log]")
+p1 <- p1 + geom_density_2d(color="wheat", bins=8)
+p1
+
+grid.arrange(p3,p1,nrow=1,widths=c(1,1))
+dev.copy2pdf(file=figpath("real_data_rates.pdf"),onefile=T)
+
+
+
+### Suppl. Figure 
 
 data.WT10[,prod.rate1b:= get.production.rate.labeled(log(L_1_WT_10_8d.exon-L_1_WT_10_8d.intron),deg.rate1,proc.rate1)]
 
@@ -417,7 +433,7 @@ p1
 
 dev.copy2pdf(file=figpath("synthesis_rates2.pdf"),onefile=T)
 
-### preparing Fig. 6
+### Figure 4  ################33
 
 
 ## projecting rates on the abundance and reactivity axes for 
@@ -456,7 +472,7 @@ for (gcat in go.cat){
 }
 data.WT10[go_func=="pleiotropic",go_func:=NA]
 
-## plotting Fig. 6
+## plotting Fig. 4 left
 ax2 <- data.table(from.x=c(0,0),from.y=c(0,0),to.x=c(3,4),to.y=c(3,-4),y.off=c(1,-1),label=c("responsiveness","abundance"))
 p1 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=prod.rate1,y=deg.rate1)) + scale_x_continuous(limits = c(-3, 10)) + scale_y_continuous(limits = c(-5.5, 4.5))
 p1 <- p1 + geom_abline(slope=1,intercept=seq(-8,0,2),alpha=0.1,linetype="solid",color="brown")+geom_abline(slope=-1,intercept=seq(-4,6,2),alpha=0.1,linetype="dashed",color="brown")
@@ -470,14 +486,13 @@ med = data.WT10[biotype=="protein_coding",list(concentration=mean(concentration,
 p1 <- p1 + geom_point(data=med,aes(x=concentration,y=-concentration,color=go_func),pch=15,cex=3)
 p1 <- p1 + geom_point(data=med,aes(x=reactivity,y=reactivity,color=go_func),pch=15,cex=3)
 p1
-dev.copy2pdf(file=figpath("real_rates.pdf"),onefile=T)
 
+## plotting fig 4 right
 p2 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=concentration,y=reactivity)) + scale_x_continuous(limits = c(-0.5, 4.5)) + scale_y_continuous(limits = c(-5, 5))
 p2 <- p2 + geom_point(data=data.WT10[biotype=="protein_coding"& !is.na(go_func)],aes(color=go_func),pch=19,alpha = 0.5,cex=1)
 p2 <- p2 + labs(x="steady-state abundance [log]", y="responsiveness [log]")
 p2 <- p2 + theme_classic() +theme(legend.position = "none",text = element_text(size=20),legend.text = element_text(size = 12),legend.title = element_text(size = 16))+coord_fixed(ratio = 1,clip="off",expand=F)
 p2 <- p2 + geom_point(data=med,aes(x=concentration,y=reactivity,color=go_func),pch=17,cex=3)
-##p2 <- p2 + geom_segment(data=med,aes(xend=-1,yend=reactivity,color=go_func))
 p2 <- p2 + geom_hline(aes(yintercept=reactivity,color=go_func),data=med,linetype="dotted")+ geom_vline(aes(xintercept=concentration,color=go_func),data=med,linetype="dotted")
 p2 <- p2 + geom_point(data=med,aes(y=reactivity,x=-Inf,color=go_func),pch=15,cex=3)+geom_point(data=med,aes(y=-Inf,x=concentration,color=go_func),pch=15,cex=3)
 p2
@@ -486,7 +501,7 @@ grid.arrange(p1,p2,nrow=1,widths=c(2.3,1))
 
 dev.copy2pdf(file=figpath("deg_synt_rates.pdf"),onefile=T)
 
-
+## checking statistical significance
 
 wilcox.test(data.WT10[biotype=="protein_coding" & go_func=="monosaccharide metabolism",reactivity],data.WT10[biotype=="protein_coding" & is.na(go_func),reactivity])
 wilcox.test(data.WT10[biotype=="protein_coding" & go_func=="monosaccharide metabolism",concentration],data.WT10[biotype=="protein_coding" & is.na(go_func),concentration])
@@ -494,23 +509,11 @@ wilcox.test(data.WT10[biotype=="protein_coding" & go_func=="transcription",react
 wilcox.test(data.WT10[biotype=="protein_coding" & go_func=="transcription",concentration],data.WT10[biotype=="protein_coding" & is.na(go_func),concentration])
 
 
-p1 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=prod.rate1,y=proc.rate1))+ scale_x_continuous(limits = c(-2, 8)) + scale_y_continuous(limits = c(-4, 1.5))
-p1 <- p1 +  geom_point(pch=19,alpha = 0.05,cex=1) +scale_color_gradient2(low="black",mid="blue",high="red",midpoint=5,na.value = "grey")
-p1 <- p1 + theme_classic() +theme(text = element_text(size=20))+coord_fixed(ratio = 1)
-p1 <- p1 + labs(x="synthesis rate [log]", y="processing rate [log]",color="intron size [log]")
-p1 <- p1 + geom_density_2d(color="wheat", bins=8)
-p1
-dev.copy2pdf(file=figpath("real_proc_cl.pdf"),onefile=T)
-
-## p1 <- ggplot(data.WT10[biotype=="protein_coding"],aes(x=reactivity,y=proc.rate1))+ scale_x_continuous(limits = c(-4, 5)) + scale_y_continuous(limits = c(-4, 1.5))
-## p1 <- p1 +  geom_point(pch=19,alpha = 0.1,cex=1) 
-## p1 <- p1 + theme_classic() +theme(text = element_text(size=20))+coord_fixed(ratio = 1)
-## p1 <- p1 + labs(x="responsiveness [log]", y="processing rate [log]")
-## p1
-
-##dev.copy2pdf(file="real_proc.pdf",onefile=T)
 data.WT10[biotype=="protein_coding",cor(prod.rate1,proc.rate1,use="p")]
 data.WT10[biotype=="protein_coding",cor(prod.rate1,deg.rate1,use="p")]
+
+
+############ Figure 5 ##########################
 
 ## comparing with Herzog et al.
 
@@ -537,7 +540,7 @@ aa3 <- data.WT10b[solvable3 %in% c("A","C"),list(fin.deg=sum(deg.rate3*sum3,na.r
 data.WT10b[,asum:=(sum1+sum2+sum3)/3]
 data.WT10[,rn := rownames(data.WT10)]
 
-# Fig 7
+# Fig 5, left
 
 thresh <- 200
 ss <- summary(lm(fin.deg+log(6) ~ slam.deg,data=aa1[msum>thresh],weights=1-lab.frac))
@@ -546,9 +549,9 @@ pv <- ggplot(aa1[msum>thresh],aes(y=fin.deg+log(6),x=slam.deg))+ geom_point(aes(
 pv <- pv + geom_abline(slope=ss$coefficient[2,1],intercept=ss$coefficient[1,1],colour="red")+ theme_classic()+annotate("text",x=-0.75,y=-4,label=paste("R =",format(100*sqrt(ss$r.squared),digits=0),"%"),size=8)+ labs(x="slam-seq estimate", y="single sample estimate ", title="degradation rate [log]")+ guides(alpha=FALSE)+theme(text = element_text(size=20))
 pv
 
-#dev.copy2pdf(file=figpath("valid_t100.pdf"),onefile=T)
 
-#### Figure 8 ##########################333
+
+#### Fig. 5, right 
 
 cor.func <- function(th,aa){
      ss <- summary(lm(fin.deg+log(6) ~ slam.deg,data=aa[msum>th & is.finite(fin.deg) & lab.frac<1],weights=1-lab.frac))
@@ -579,6 +582,8 @@ grid.arrange(pv,pc,nrow=1)
 
 dev.copy2pdf(file=figpath("slamseq_comp.pdf"),onefile=T)
 
+
+############# Figure 6  and sup Fig D8 ##############################333
 
 ### generate inspect rates
 
@@ -679,9 +684,8 @@ ggplot(data.WT10,aes(x=log(P_1_WT_10_8d.exon),y=0.5*log(p.exon.var)))+geom_point
         return(c(n.ssre=length(sset),elapsed.ssre=atoc[1]+atoc[2],n.out.ssre=ssre[is.finite(deg.rate),.N]))
     }
     
-benchmarking  <- FALSE
-##inspfname <- "inspect_rates" # base filename for inspect rates
- inspfname <- "insp_rates_loess_p" # base filename for inspect rates
+benchmarking  <- FALSE ## set to TRUE to compare cpu time
+inspfname <- "insp_rates_loess_p" # base filename for inspect rates
 nbtrans <- nrow(data.WT10)
 
  if (benchmarking){
@@ -731,8 +735,6 @@ nbtrans <- nrow(data.WT10)
      icol2 <- paste(irate.name[i],replid[2],sep=".")
      icolx <- sym(icol1)
      icoly <- sym(icol2)
-     ## ilabx <- paste("repl.",replid[1], "INSPEcT",irate.label[i],"rate [log]")
-     ## ilaby <- paste("repl.",replid[2], "INSPEcT",irate.label[i],"rate [log]")
      ilabx <- paste("repl.",replid[1], "INSPEcT","rate [log]")
      ilaby <- paste("repl.",replid[2], "INSPEcT","rate [log]")
      rr  <- cor(comp.insp[cond,get(icol1)],comp.insp[cond,get(icol2)], method="spearman", use= "pairwise.complete.obs")
@@ -743,8 +745,6 @@ nbtrans <- nrow(data.WT10)
      col2 <- paste0(rate.name[i],replid[2])
      colx <- sym(col1)
      coly <- sym(col2)
-     ## labx <- paste("repl.",replid[1], "SSRE",irate.label[i],"rate [log]")
-     ## laby <- paste("repl.",replid[2], "SSRE",irate.label[i],"rate [log]")
      labx <- paste("repl.",replid[1], "SSRE","rate [log]")
      laby <- paste("repl.",replid[2], "SSRE","rate [log]")
      rr  <- cor(comp.insp[cond,get(col1)],comp.insp[cond,get(col2)], method="spearman", use= "pairwise.complete.obs")
@@ -802,7 +802,6 @@ nbtrans <- nrow(data.WT10)
  icor.data <- data.table(thresh=c(0,100,200,500,1000))
  cort <- matrix(NA,5,3)
  dft  <- matrix(NA,5,3)
- ##laa  <- list(aa1,aa2,aa3,aa4,aa5)
 laa  <- list(aa1i,aa2i,aa3i)
  for (j in seq(length(laa))){
      var =paste0(c("cor","df","slope"),j)
