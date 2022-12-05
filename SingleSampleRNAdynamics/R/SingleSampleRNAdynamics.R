@@ -373,7 +373,7 @@ moptim <- function(lpre.frac, llab.frac,init.par,lbm,ubm){
                     error = function(e){print("trying again up")
                         optim(lbm,fn=sq.error.line.nat,gr=NULL, log.pre.frac=lpre.frac,
                               log.lab.frac=llab.frac,t=tp,method="L-BFGS-B",
-                              lower=ubm,lower=opt.par-marg)})
+                              upper=ubm,lower=opt.par+marg)})
     
     if(op2$par + 1.1*marg < opt.par){
         opt.par <- c(op2$par,opt.par)
@@ -396,6 +396,9 @@ moptim <- function(lpre.frac, llab.frac,init.par,lbm,ubm){
 ##' @author Micha Hersch
 eval.rates.vec <- function(pre.frac,lab.frac,tp=1,cl=NULL){
     keep <-  which(!(pre.frac>1 | lab.frac>1 | is.na(pre.frac) | is.na(lab.frac) | pre.frac>=lab.frac))
+    if(length(keep) < 2){
+       stop("You need at least two valid transcripts to run function eval.rates.vec")
+    }	    
     lpre.frac <- log(pre.frac[keep])
      llab.frac <- log(lab.frac[keep])
     eps <- 0.0000001
