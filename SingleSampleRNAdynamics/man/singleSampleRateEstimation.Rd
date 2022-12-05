@@ -2,7 +2,9 @@
 % Please edit documentation in R/SingleSampleRNAdynamics.R
 \name{singleSampleRateEstimation}
 \alias{singleSampleRateEstimation}
-\title{}
+\title{Estimates RNA synthesis, processing and degradation rates from 4sU metabolic
+labeling experiments with a pre-existing and labeled RNA quantification of
+exons and introns.}
 \usage{
 singleSampleRateEstimation(TPM.data)
 }
@@ -31,15 +33,11 @@ the function (eq 13 of paper), "A" if the rates were estimated by minimization,
 }
 }
 \description{
-Estimates RNA synthesis, processing and degradation rates from 4sU metabolic
-labeling experiments with a pre-existing and labeled RNA quantification of
-exons and introns.
-}
-\details{
 This function implements the method described in Hersch et al,
 "Estimating RNA dynamics using one time point for one sample in single-pulse
 metabolic labeling experiment", 2022.
-
+}
+\details{
 Note that this method can only estimate rates of transripts for which the ratio
 of intron to exon expression is below 1 and is higher in the labeled RNA
 than in the unlabeled RNA

@@ -2,7 +2,7 @@
 % Please edit documentation in R/SingleSampleRNAdynamics.R
 \name{eval.rates.vec}
 \alias{eval.rates.vec}
-\title{}
+\title{vectorized version of rate estimation}
 \usage{
 eval.rates.vec(pre.frac, lab.frac, tp = 1, cl = NULL)
 }

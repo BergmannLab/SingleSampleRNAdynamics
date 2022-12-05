@@ -15,7 +15,6 @@ library(data.table)
 ##' than in the unlabeled RNA
 ##' (see the paper for the details).
 ##' 
-##' @title 
 ##' @param TPM.data a data frame containing the columns with the following
 ##' self-explanatory names:
 ##' * unlabeled.intron
@@ -115,7 +114,6 @@ solve.rates3 <- function(pre.frac,lab.frac,t=1){
 ##' Extracts processing and degradation rates from unlabled (pre-existing) and labeled intro to exon ratios for a single transcript. 
 ##'
 ##' See reference paper for the details of the method. Ratios expected to be smaller that one and labeled ratio is expected to be larger than the unlabeled ratio. 
-##' @title 
 ##' @param frac a vector of size 2 containing :
 ##' 1. the prexisting intron to exon ratio
 ##' 2. the labeled intron to exon ratio
@@ -332,7 +330,7 @@ central <- function(x){
 ##' Performs function minimization on a bounded domain using a gradient method.
 ##'
 ##' Looks for two minimas and returns them both.
-##' @title 
+##'  
 ##' @param lpre.frac log unlabeled intron to exon ratio
 ##' @param llab.frac log labeled intron to exon ratio
 ##' @param init.par initial parameter value for searcu
@@ -379,7 +377,7 @@ moptim <- function(lpre.frac, llab.frac,init.par,lbm,ubm){
 ##' .. vectorized version of function optimization
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title vectorized version of rate estimation
 ##' @param pre.frac unlabled intron to exon ratios for multiple transcripts
 ##' @param lab.frac labled intron to exon ratios for the same transcripts
 ##' @param tp labeling time

@@ -2,7 +2,7 @@
 % Please edit documentation in R/SingleSampleRNAdynamics.R
 \name{solve.rates}
 \alias{solve.rates}
-\title{}
+\title{Extracts processing and degradation rates from unlabled (pre-existing) and labeled intro to exon ratios for a single transcript.}
 \usage{
 \method{solve}{rates}(frac, t = 1)
 }
@@ -28,9 +28,6 @@ If there are no solution the vector c(NA,NA) is returned.
 }
 }
 \description{
-Extracts processing and degradation rates from unlabled (pre-existing) and labeled intro to exon ratios for a single transcript.
-}
-\details{
 See reference paper for the details of the method. Ratios expected to be smaller that one and labeled ratio is expected to be larger than the unlabeled ratio.
 }
 \author{
