@@ -19,10 +19,10 @@ eval.rates.vec(pre.frac, lab.frac, tp = 1, cl = NULL)
 a matrix where each row corresponds to a transcripts. The first column corresponds to the degradation rate, and the second column corresponds to the processing rate. A third and fourth column containing degradation and processing rates for a second mimima are provided if necessary.
 }
 \description{
-.. vectorized version of function optimization
+vectorized version of function optimization
 }
 \details{
-.. content for \details{} ..
+vectorized call of function optimization.
 }
 \author{
 Micha Hersch

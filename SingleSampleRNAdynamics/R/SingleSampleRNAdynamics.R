@@ -220,10 +220,20 @@ r2 <- function(b,c,t=1){
     if(is.na(b) | is.na(c)){
         return(NA)
     }
-    eps <- 0.000000001
+    eps <- 0.000000000001
     thresh <- 0
-    if(abs(b-c)<eps){
-        return(r2lim(c,t))
+    if(abs(b-c)<eps){ ## applying L'Hospital rule to r2 (on k)
+	if (t>eps){
+	   ect <- exp(-c*t)
+	   ebt <- exp(-b*t)
+	   lognum <- log(1-(1+(c-b)*t)*ect)
+	   logden <- log(2*c/b*(1-ebt)-b*t*ect)
+	}else{ ##applying L'Hospital rule again (on t)
+	   km1 = c/b -1 
+	   lognum <- log(1-c*km1*t)
+	   logden <- log(2*c/b*exp(-(b-c)*t)+c*t-1)
+	}	
+	return(lognum-logden)
     }else{
         if(t<0){ ## never
             num <- b*(b-c)*(1-exp(-c*t))
@@ -374,9 +384,9 @@ moptim <- function(lpre.frac, llab.frac,init.par,lbm,ubm){
 }
 
 
-##' .. vectorized version of function optimization
+##' vectorized version of function optimization
 ##'
-##' .. content for \details{} ..
+##' vectorized call of function optimization.
 ##' @title vectorized version of rate estimation
 ##' @param pre.frac unlabled intron to exon ratios for multiple transcripts
 ##' @param lab.frac labled intron to exon ratios for the same transcripts
